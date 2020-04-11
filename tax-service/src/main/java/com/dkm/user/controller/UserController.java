@@ -7,22 +7,22 @@ import com.dkm.user.service.IUserService;
 import com.dkm.user.utils.BodyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: HuangJie
  * @Date: 2020/4/10 16:29
  * @Version: 1.0V
  */
-@Api(tags = "用户信息绑定接口")
+@Api(tags = "用户信息接口")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -78,9 +78,29 @@ public class UserController {
     public UserVO adminUser(HttpServletRequest request){
         JSONObject json = BodyUtils.bodyJson(request);
         String code = json.getString("code");
-        UserBO userBO = userService.bindUserInformation(code, 2);
+        UserBO userBO = userService.bindUserInformation(code, 3);
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(userBO,userVO);
         return userVO;
+    }
+    @ApiOperation(value = "获取所有的操作员",notes = "无",code = 200,produces = "application/json")
+    @GetMapping("/all/operator")
+    @CrossOrigin
+    public List<UserVO> allOperator(){
+        return userService.allOperator();
+    }
+
+    @ApiOperation(value = "设置操作员权限",notes = "传入操作员ID",code = 200,produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id",value = "操作员ID",dataType = "Long",required = true,paramType = "body"),
+        @ApiImplicitParam(name = "status",value = "操作员状态，0代表无权限，1代表有权限",dataType = "Integer",required = true,paramType = "body")
+    })
+    @PostMapping("/operator/permission")
+    @CrossOrigin
+    public Boolean operationPermission(HttpServletRequest request){
+        JSONObject json = BodyUtils.bodyJson(request);
+        Long id = json.getLong("id");
+        Integer status = json.getInteger("status");
+        return userService.operationPermission(id,status);
     }
 }

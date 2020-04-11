@@ -7,6 +7,7 @@ import com.dkm.exception.ApplicationException;
 import com.dkm.user.dao.UserMapper;
 import com.dkm.user.entity.User;
 import com.dkm.user.entity.bo.UserBO;
+import com.dkm.user.entity.vo.UserVO;
 import com.dkm.user.service.IUserService;
 import com.dkm.user.utils.WeChatUtil;
 import com.dkm.user.utils.bo.WeChatUtilBO;
@@ -14,8 +15,12 @@ import com.dkm.utils.IdGenerator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author: HuangJie
@@ -32,6 +37,7 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private IdGenerator idGenerator;
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public UserBO bindUserInformation(String code, Integer status) {
         try {
             WeChatUtilBO weChatUtilBO = weChatUtil.codeToUserInfo(code);
@@ -45,6 +51,7 @@ public class UserServiceImpl implements IUserService {
                     //消费者
                     user.setRoleName("消费者");
                     user.setRoleStatus(1);
+                    user.setStatus(0);
                     break;
                 case 2:
                     //操作员
@@ -88,5 +95,33 @@ public class UserServiceImpl implements IUserService {
         } catch (IOException e) {
             throw new ApplicationException(CodeType.SERVICE_ERROR, "用户信息绑定失败");
         }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<UserVO> allOperator() {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("role_status",2);
+        List<User> users = userMapper.selectList(queryWrapper);
+        if (users!=null){
+            return users.stream().map(user -> {
+                UserVO userVO = new UserVO();
+                BeanUtils.copyProperties(user, userVO);
+                return userVO;
+            }).collect(Collectors.toList());
+        }
+        return new ArrayList<UserVO>();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean operationPermission(Long id,Integer status) {
+        User user = new User();
+        user.setId(id);
+        user.setStatus(status);
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id",user.getId());
+        int update = userMapper.update(user, updateWrapper);
+        return update == 1;
     }
 }

@@ -28,6 +28,7 @@ public class BodyUtils {
             }
             inputStream.close();
             stream.close();
+            System.out.println(stream.toString());
             return JSONObject.parseObject(stream.toString());
         } catch (IOException e) {
             throw new ApplicationException(CodeType.SERVICE_ERROR,"请求Body内的数据获取异常");
