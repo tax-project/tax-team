@@ -8,7 +8,6 @@ import com.dkm.problem.entity.Problem;
 import com.dkm.problem.entity.vo.ProblemVo;
 import com.dkm.problem.service.IProblemService;
 import com.dkm.utils.IdGenerator;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +22,6 @@ import java.util.Set;
  * @date 2020/4/10
  * @vesion 1.0
  **/
-@Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> implements IProblemService {

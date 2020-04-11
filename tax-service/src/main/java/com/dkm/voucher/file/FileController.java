@@ -5,7 +5,6 @@ import com.dkm.exception.ApplicationException;
 import com.dkm.utils.IdGenerator;
 import com.dkm.voucher.file.utils.FileUtils;
 import io.swagger.annotations.Api;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,6 @@ import java.nio.file.Path;
  * @vesion 1.0
  **/
 @Api(tags = "上传文件api")
-@Slf4j
 @RestController
 @RequestMapping("/v1/file")
 public class FileController {
@@ -78,7 +76,6 @@ public class FileController {
             System.out.println(extraName);
             return  fileUrl + "/" + fileName.substring(0, 8) + "/"  + fileName + extraName;
          } catch (IOException e) {
-            log.info("io err", e);
             throw new IllegalArgumentException("文件上传失败");
          }
       }

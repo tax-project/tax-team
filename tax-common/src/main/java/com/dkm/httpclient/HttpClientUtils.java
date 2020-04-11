@@ -3,7 +3,6 @@ package com.dkm.httpclient;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
@@ -234,7 +233,7 @@ public class HttpClientUtils {
         try {
             if (tokenString != null && !tokenString.equals("")) {
                 //自定义header头，用于token验证使用
-                get.addHeader("Authorization", tokenString);
+                get.addHeader("token", tokenString);
                 get.addHeader("Content-Type", "application/json");
                 HttpResponse response = httpClient.execute(get);
                 if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {

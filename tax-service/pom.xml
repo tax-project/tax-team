@@ -11,6 +11,7 @@
     <artifactId>tax-service</artifactId>
     <packaging>war</packaging>
 
+
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -20,14 +21,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <!--             移除嵌入式tomcat插件-->
-            <!--            <exclusions>-->
-            <!--                <exclusion>-->
-            <!--                    <groupId>org.springframework.boot</groupId>-->
-            <!--                    <artifactId>spring-boot-starter-tomcat</artifactId>-->
-            <!--                </exclusion>-->
-            <!--            </exclusions>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.springframework.boot</groupId>-->
+<!--                    <artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
         </dependency>
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -53,21 +53,6 @@
             <version>3.3.3</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.tedzhdz</groupId>
-            <artifactId>wxpay-sdk</artifactId>
-            <version>3.0.9</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-classic</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
     </dependencies>
 
     <build>
@@ -82,6 +67,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.0.0</version>
             </plugin>
+
 
         </plugins>
         <finalName>tax-service</finalName>

@@ -3,10 +3,15 @@ package com.dkm.answer.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.dkm.answer.service.IAnswerService;
 import com.dkm.user.utils.BodyUtils;
-import io.swagger.annotations.*;
-import lombok.val;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -3,7 +3,6 @@ package com.dkm.handle;
 import com.dkm.anntation.IgnoreResponseAdvice;
 import com.dkm.data.Result;
 import com.dkm.exception.ApplicationException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
@@ -17,7 +16,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @Date 2019/8/31
  * @Version 1.0
  */
-@Slf4j
 @RestControllerAdvice
 public class GlobalResponseHandler implements ResponseBodyAdvice {
 

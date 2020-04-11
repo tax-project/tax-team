@@ -23,9 +23,11 @@ qrCode:
 # 图片上传到本工程服务器
 file:
   url: http://39.108.118.48:8080/tax-service
+# 调微信支付接口的账号密码
 wx:
-  pay: https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers
-  appId: wxa5c9572cb207cd5d
-  mchId: 1546806081
-  paterNerKey: pL7ZKqYxqH65KAmnpSZPKtp3kcy0Pug6
+  userName: 20200411200848698625624062988288
+  passWord: d7cef41ed7324e8393a2f8967669cdeb
+# 相关微信接口
+  authLogin: http://39.108.118.48:8080/dkm_pay_resource/v1/auth/authLogin
+  payToPerson: http://39.108.118.48:8080/dkm_pay_resource/v1/wxPay/toPerson
 

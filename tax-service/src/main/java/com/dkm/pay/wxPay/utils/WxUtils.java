@@ -1,7 +1,5 @@
 package com.dkm.pay.wxPay.utils;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,7 +10,6 @@ import java.text.DecimalFormat;
  * @date 2020/3/19
  * @vesion 1.0
  **/
-@Slf4j
 public class WxUtils {
 
    /**

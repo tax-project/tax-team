@@ -2,7 +2,6 @@ package com.dkm.handle;
 
 import com.dkm.constanct.CodeType;
 import com.dkm.exception.ApplicationException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
  * @Version 1.0
  */
 @RestControllerAdvice
-@Slf4j
 public class ApplicationAdviceHandle extends ResponseEntityExceptionHandler {
 
 
@@ -27,7 +25,6 @@ public class ApplicationAdviceHandle extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(value = ApplicationException.class)
     public ApplicationException applicationExceptionHandle (final ApplicationException e, HttpServletResponse response) {
-        log.error(e.getMsg());
 //        response.setStatus(e.getHttpStatus());
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "*");
@@ -45,7 +42,6 @@ public class ApplicationAdviceHandle extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     public ApplicationException exceptionHandle (final ApplicationException e, HttpServletResponse response) {
-        log.error(e.getMsg());
         response.setStatus(CodeType.UNKNOWN_ERROR.getHttpStatus());
         e.printStackTrace();
         return new ApplicationException(CodeType.UNKNOWN_ERROR);
