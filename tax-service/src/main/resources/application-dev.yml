@@ -7,13 +7,19 @@ spring:
 qrCode:
   #  餐厅
   restaurant: http://www.baidu.com
+  reQrUrl: http://39.108.118.48:8080/tax-service/v1/qrCode/restaurantQrCode
   #  超市
   supermarket: http://www.baidu.com
+  suQrUrl: http://39.108.118.48:8080/tax-service/v1/qrCode/supermarketQrCode
   #  建材
   buildingMaterial: http://www.baidu.com
+  buQrUrl: http://39.108.118.48:8080/tax-service/v1/qrCode/buildingMaterialQrCode
   #  管理员
   admin: http://www.baidu.com
   #  操作员
   operator: http://www.baidu.com
   #  用户
-  user: http://www.baidu.com
+  user: http://192.168.10.176:8080
+# 图片上传到本工程服务器
+file:
+  url: http://39.108.118.48:8080/tax-service

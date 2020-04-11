@@ -1,8 +1,6 @@
 package com.dkm.aop.beans;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.dkm.handle.ApplicationAdviceHandle;
-import com.dkm.handle.GlobalResponseHandler;
 import com.dkm.utils.IdGenerator;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
@@ -14,15 +12,6 @@ import org.springframework.context.annotation.Bean;
  **/
 public abstract class Aspect extends SpringBootServletInitializer {
 
-   @Bean
-   public GlobalResponseHandler getGlobalResponseHandler() {
-      return new GlobalResponseHandler();
-   }
-
-   @Bean
-   public ApplicationAdviceHandle getApplicationAdviceHandle() {
-      return new ApplicationAdviceHandle();
-   }
 
    /**
     * 多表分页的bean
@@ -32,15 +21,6 @@ public abstract class Aspect extends SpringBootServletInitializer {
    public PaginationInterceptor paginationInterceptor() {
       return new PaginationInterceptor();
    }
-
-   /**
-    * token用户信息
-    * @return
-    */
-//   @Bean
-//   public LocalUser getUser () {
-//      return new LocalUser();
-//   }
 
    /**
     * id，订单号生成器

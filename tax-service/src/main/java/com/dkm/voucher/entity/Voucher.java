@@ -62,6 +62,11 @@ public class Voucher extends Model<Voucher> {
    private LocalDateTime dateTime;
 
    /**
+    * 操作人id
+    */
+   private Long updateUserId;
+
+   /**
     * 操作人
     */
    private String updateUser;

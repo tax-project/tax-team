@@ -37,7 +37,6 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private IdGenerator idGenerator;
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public UserBO bindUserInformation(String code, Integer status) {
         try {
             WeChatUtilBO weChatUtilBO = weChatUtil.codeToUserInfo(code);
@@ -51,7 +50,6 @@ public class UserServiceImpl implements IUserService {
                     //消费者
                     user.setRoleName("消费者");
                     user.setRoleStatus(1);
-                    user.setStatus(0);
                     break;
                 case 2:
                     //操作员
@@ -123,5 +121,16 @@ public class UserServiceImpl implements IUserService {
         updateWrapper.eq("id",user.getId());
         int update = userMapper.update(user, updateWrapper);
         return update == 1;
+    }
+
+    /**
+     * 查询操作员的操作权限
+     * @param id
+     * @return
+     */
+    @Override
+    public Integer queryOptionStatus(Long id) {
+        User user = userMapper.selectById(id);
+        return user.getStatus();
     }
 }

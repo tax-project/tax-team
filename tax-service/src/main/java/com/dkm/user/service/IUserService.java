@@ -21,6 +21,13 @@ public interface IUserService {
      */
     UserBO bindUserInformation(String code, Integer status);
 
+    /**
+     * 查询操作员的操作权限
+     * @param id
+     * @return
+     */
+    Integer queryOptionStatus (Long id);
+
 
     /**
      * 获取所有操作员
