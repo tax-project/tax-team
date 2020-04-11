@@ -3,7 +3,6 @@ package com.dkm.aop.beans;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.dkm.handle.ApplicationAdviceHandle;
 import com.dkm.handle.GlobalResponseHandler;
-import com.dkm.jwt.contain.LocalUser;
 import com.dkm.utils.IdGenerator;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
@@ -38,10 +37,10 @@ public abstract class Aspect extends SpringBootServletInitializer {
     * token用户信息
     * @return
     */
-   @Bean
-   public LocalUser getUser () {
-      return new LocalUser();
-   }
+//   @Bean
+//   public LocalUser getUser () {
+//      return new LocalUser();
+//   }
 
    /**
     * id，订单号生成器

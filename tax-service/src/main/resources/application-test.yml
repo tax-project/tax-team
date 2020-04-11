@@ -4,4 +4,17 @@ spring:
     username: root
     password: 123
     driver-class-name: com.mysql.cj.jdbc.Driver
+qrCode:
+  #  餐厅
+  restaurant: http://www.baidu.com
+  #  超市
+  supermarket: http://www.baidu.com
+  #  建材
+  buildingMaterial: http://www.baidu.com
+  #  管理员
+  admin: http://www.baidu.com
+  #  操作员
+  operator: http://www.baidu.com
+  #  用户
+  user: http://www.baidu.com
 
