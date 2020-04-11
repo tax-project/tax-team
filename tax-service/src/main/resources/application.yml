@@ -15,3 +15,20 @@ app:
   workerId: 9
   dataCenterId: 1
 
+#微信密钥
+weChat:
+  access:
+    token:
+      url: https://api.weixin.qq.com/sns/oauth2/access_token
+      confirmation:
+        url: https://api.weixin.qq.com/sns/auth
+  app:
+#    id: wx1ed0a0075ff2df55
+#    id: wxa5c9572cb207cd5d
+    id: wx69abe63fb3af0007
+#  secret: 5b0a54fae593deb6ed656656c5c96bfc
+#  secret: pL7ZKqYxqH65KAmnpSZPKtp3kcy0Pug6
+  secret: 0d53a67db5ed991d697999001657e621
+  user:
+    info:
+      url: https://api.weixin.qq.com/sns/userinfo

@@ -9,6 +9,9 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * @author Administrator
+ */
 @SpringBootApplication
 @EnableSwagger2
 @EnableTransactionManagement
