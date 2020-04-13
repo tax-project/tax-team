@@ -6,8 +6,6 @@ import com.dkm.constanct.CodeType;
 import com.dkm.exception.ApplicationException;
 import com.dkm.jwt.JwtVerfy;
 import com.dkm.jwt.contain.LocalUser;
-import com.dkm.jwt.entity.CityJwtBo;
-import com.dkm.jwt.entity.PrivilegeMenuQuery;
 import com.dkm.jwt.entity.UserLoginQuery;
 import com.dkm.jwt.islogin.CheckToken;
 import com.dkm.jwt.islogin.LoginToken;
@@ -66,14 +64,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 UserLoginQuery query = new UserLoginQuery();
                 try {
                     query.setId(JWT.decode(token).getClaim("id").asLong());
-                    query.setAccount(JWT.decode(token).getClaim("userName").asString());
-                    query.setCname(JWT.decode(token).getClaim("cname").asString());
-                    query.setCompanyId(JWT.decode(token).getClaim("companyId").asLong());
-                    query.setMenuList(JWT.decode(token).getClaim("menuList").asList(PrivilegeMenuQuery.class));
-                    query.setRoleName(JWT.decode(token).getClaim("roleName").asString());
-                    query.setTel(JWT.decode(token).getClaim("tel").asString());
-                    query.setStatus(JWT.decode(token).getClaim("status").asInt());
-                    query.setCity(JWT.decode(token).getClaim("city").asList(CityJwtBo.class));
+                    query.setWxNickName(JWT.decode(token).getClaim("wxNickName").asString());
+                    query.setWxOpenId(JWT.decode(token).getClaim("wxOpenId").asString());
+                    query.setRoleStatus(JWT.decode(token).getClaim("roleStatus").asInt());
 
                 } catch (JWTDecodeException j) {
                     throw new ApplicationException(CodeType.OVENDU_ERROR,"token错误");

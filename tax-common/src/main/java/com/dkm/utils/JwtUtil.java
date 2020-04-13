@@ -7,6 +7,7 @@ import com.dkm.jwt.entity.UserLoginQuery;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import java.util.UUID;
  * @Date 2019/9/24
  * @Version 1.0
  */
+@Component
 public class JwtUtil {
 
     /**
@@ -28,7 +30,7 @@ public class JwtUtil {
      * @param user      登录成功的user对象
      * @return
      */
-    public static String createJWT(long ttlMillis, UserLoginQuery user) {
+    public String createJWT(long ttlMillis, UserLoginQuery user) {
         //指定签名的时候使用的签名算法，也就是header那部分，jjwt已经将这部分内容封装好了。
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
@@ -43,18 +45,15 @@ public class JwtUtil {
         //创建payload的私有声明（根据特定的业务需要添加，如果要拿这个做验证，一般是需要和jwt的接收方提前沟通好验证方式的）
         Map<String, Object> claims = new HashMap<String, Object>();
         claims.put("id", user.getId());
-        claims.put("userName", user.getAccount());
-        claims.put("cname",user.getCname());
-        claims.put("companyId",user.getCompanyId());
-        claims.put("tel",user.getTel());
-        claims.put("roleName",user.getRoleName());
-        claims.put("menuList",user.getMenuList());
+        claims.put("wxOpenId", user.getWxOpenId());
+        claims.put("wxNickName",user.getWxNickName());
+        claims.put("roleStatus",user.getRoleStatus());
 
         //生成签名的时候使用的秘钥secret,这个方法本地封装了的，一般可以从本地配置文件中读取，切记这个秘钥不能外露哦。它就是你服务端的私钥，在任何场景都不应该流露出去。一旦客户端得知这个secret, 那就意味着客户端是可以自我签发jwt了。
         String key = user.getId().toString();
 
         //生成签发人
-        String subject = user.getAccount();
+        String subject = user.getWxNickName();
 
 
 

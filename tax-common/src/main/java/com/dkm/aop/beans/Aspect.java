@@ -1,7 +1,6 @@
 package com.dkm.aop.beans;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.dkm.utils.IdGenerator;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
@@ -20,15 +19,6 @@ public abstract class Aspect extends SpringBootServletInitializer {
    @Bean
    public PaginationInterceptor paginationInterceptor() {
       return new PaginationInterceptor();
-   }
-
-   /**
-    * id，订单号生成器
-    * @return
-    */
-   @Bean
-   public IdGenerator getIdGenerator() {
-      return new IdGenerator();
    }
 
 

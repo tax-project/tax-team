@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.dkm.user.entity.bo.UserBO;
 import com.dkm.user.entity.vo.UserVO;
 import com.dkm.user.service.IUserService;
+import com.dkm.user.token.CreateToken;
 import com.dkm.user.utils.BodyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,8 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: HuangJie
@@ -30,6 +32,9 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private CreateToken createToken;
+
     /**
      * 消费者登录接口
      * @param request 请求体
@@ -39,13 +44,17 @@ public class UserController {
     @ApiImplicitParam(name = "code",value = "微信code码",dataType = "String",required = true,paramType = "body")
     @PostMapping("/consumers")
     @CrossOrigin
-    public UserVO consumersUser(HttpServletRequest request){
+    public Map<String, Object> consumersUser(HttpServletRequest request){
         JSONObject json = BodyUtils.bodyJson(request);
         String code = json.getString("code");
         UserBO userBO = userService.bindUserInformation(code, 1);
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(userBO,userVO);
-        return userVO;
+        String token = createToken.getToken(userBO);
+        Map<String,Object> map = new HashMap<>();
+        map.put("token",token);
+        map.put("data",userVO);
+        return map;
     }
 
     /**
@@ -57,13 +66,17 @@ public class UserController {
     @ApiImplicitParam(name = "code",value = "微信code码",dataType = "String",required = true,paramType = "body")
     @PostMapping("/operator")
     @CrossOrigin
-    public UserVO operatorUser(HttpServletRequest request){
+    public Map<String, Object> operatorUser(HttpServletRequest request){
         JSONObject json = BodyUtils.bodyJson(request);
         String code = json.getString("code");
         UserBO userBO = userService.bindUserInformation(code, 2);
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(userBO,userVO);
-        return userVO;
+        String token = createToken.getToken(userBO);
+        Map<String,Object> map = new HashMap<>();
+        map.put("token",token);
+        map.put("data",userVO);
+        return map;
     }
 
     /**
@@ -75,13 +88,17 @@ public class UserController {
     @ApiImplicitParam(name = "code",value = "微信code码",dataType = "String",required = true,paramType = "body")
     @PostMapping("/admin")
     @CrossOrigin
-    public UserVO adminUser(HttpServletRequest request){
+    public Map<String, Object> adminUser(HttpServletRequest request){
         JSONObject json = BodyUtils.bodyJson(request);
         String code = json.getString("code");
         UserBO userBO = userService.bindUserInformation(code, 3);
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(userBO,userVO);
-        return userVO;
+        String token = createToken.getToken(userBO);
+        Map<String,Object> map = new HashMap<>();
+        map.put("token",token);
+        map.put("data",userVO);
+        return map;
     }
     @ApiOperation(value = "获取所有的操作员",notes = "无",code = 200,produces = "application/json")
     @GetMapping("/all/operator")
