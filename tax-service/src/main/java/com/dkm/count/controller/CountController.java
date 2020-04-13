@@ -25,6 +25,8 @@ public class CountController {
 
     @Autowired
     private IVoucherService voucherService;
+
+
     @ApiOperation(value = "获取所有的支付记录",notes = "HTTP头部携带Token",httpMethod = "GET")
     @ApiImplicitParam(name = "token",value = "用户Token，存放在HTTP的头部",required = true,dataType = "String",paramType = "header")
     @GetMapping("/all/voucher")
