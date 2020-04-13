@@ -39,7 +39,6 @@ public class AnswerController {
     public Boolean submitAnswer(HttpServletRequest request){
         JSONObject json = BodyUtils.bodyJson(request);
         String answer = json.getString("answer");
-
         return answerService.submitAnswer(answer);
     }
 }
