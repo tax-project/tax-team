@@ -31,4 +31,10 @@ public class VoucherReturnQrCodeVo {
     * 优惠卷金额
     */
    private Double typeMoney;
+
+   /**
+    * 二维码地址
+    */
+   private String qrCodeUrl;
+
 }

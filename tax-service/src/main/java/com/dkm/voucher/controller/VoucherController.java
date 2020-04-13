@@ -2,6 +2,7 @@ package com.dkm.voucher.controller;
 
 import com.dkm.constanct.CodeType;
 import com.dkm.exception.ApplicationException;
+import com.dkm.jwt.islogin.CheckToken;
 import com.dkm.utils.StringUtils;
 import com.dkm.voucher.entity.bo.OptionBo;
 import com.dkm.voucher.entity.bo.ResultBo;
@@ -30,32 +31,28 @@ public class VoucherController {
    private IVoucherService voucherService;
 
 
-   @ApiOperation(value = "根据用户id返回展示所有消费者的二维码信息", notes = "根据用户id返回展示所有消费者的二维码信息")
-   @ApiImplicitParam(name = "userId",value = "用户id",dataType = "Long",required = true,paramType = "body")
+   @ApiOperation(value = "展示消费者的二维码信息", notes = "展示消费者的二维码信息")
    @GetMapping("/listAllQrCode")
    @CrossOrigin
-   public List<VoucherReturnQrCodeVo> listAllQrCode (@RequestParam("userId") Long userId) {
+   @CheckToken
+   public List<VoucherReturnQrCodeVo> listAllQrCode () {
 
-      if (userId == null) {
-         throw new ApplicationException(CodeType.PARAMETER_ERROR, "参数不能为空");
-      }
-      return voucherService.listAllQrCode(userId);
+      return voucherService.listAllQrCode();
    }
 
 
    @ApiOperation(value = "操作员上传凭证", notes = "操作员上传凭证")
    @ApiImplicitParams({
          @ApiImplicitParam(name = "id", value = "凭证id", required = true, dataType = "Long", paramType = "path"),
-         @ApiImplicitParam(name = "optionUserId", value = "操作人用户id", required = true, dataType = "Long", paramType = "path"),
          @ApiImplicitParam(name = "ticketUrl", value = "小票url", required = true, dataType = "String", paramType = "path"),
          @ApiImplicitParam(name = "optionUser", value = "操作人名字", required = true, dataType = "String", paramType = "path"),
    })
    @PostMapping("/uploadVoucher")
    @CrossOrigin
+   @CheckToken
    public ResultBo uploadVoucher (@RequestBody OptionBo bo) {
 
-      if (bo.getId() == null || bo.getOptionUserId() == null || StringUtils.isBlank(bo.getOptionUser())
-      || StringUtils.isBlank(bo.getTicketUrl())) {
+      if (bo.getId() == null || StringUtils.isBlank(bo.getOptionUser()) || StringUtils.isBlank(bo.getTicketUrl())) {
          throw new ApplicationException(CodeType.PARAMETER_ERROR, "参数不能为空");
       }
 

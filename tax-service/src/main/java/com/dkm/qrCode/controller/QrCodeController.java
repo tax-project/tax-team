@@ -1,12 +1,12 @@
 package com.dkm.qrCode.controller;
 
-import com.dkm.constanct.CodeType;
-import com.dkm.exception.ApplicationException;
+import com.dkm.jwt.contain.LocalUser;
+import com.dkm.jwt.entity.UserLoginQuery;
+import com.dkm.jwt.islogin.CheckToken;
 import com.dkm.qrCode.QrCode;
 import com.dkm.voucher.entity.vo.VoucherQrCodeVo;
 import com.dkm.voucher.service.IVoucherService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -75,38 +75,42 @@ public class QrCodeController {
    @Autowired
    private IVoucherService voucherService;
 
+   @Autowired
+   private LocalUser localUser;
+
    @ApiOperation(value = "餐厅二维码", notes = "餐厅二维码")
-   @ApiImplicitParam(name = "userId",value = "用户id",dataType = "Long",required = true,paramType = "body")
    @GetMapping("/restaurantQrCode")
    @CrossOrigin
-   public void restaurantQrCode (HttpServletResponse response,@RequestParam("userId") Long userId) {
+   @CheckToken
+   public void restaurantQrCode (HttpServletResponse response) {
 
-      if (userId == null) {
-         throw new ApplicationException(CodeType.PARAMETER_ERROR, "用户ID不能为空");
-      }
+      UserLoginQuery user = localUser.getUser("user");
 
       VoucherQrCodeVo vo = new VoucherQrCodeVo();
-      vo.setUserId(userId);
-      String url = reQrUrl + "?userId=" + userId;
-      vo.setQrCodeUrl(url);
+      vo.setUserId(user.getId());
+      //消费者进行使用
+      vo.setQrCodeUrl(reQrUrl);
       vo.setTypeName("餐厅");
       vo.setTypeMoney(20.0);
 
       voucherService.insertVoucher(vo);
 
       //餐厅的二维码
+      //操作员扫描
       qrCode.qrCode(restaurantQrCode,response);
    }
 
    @ApiOperation(value = "超市二维码", notes = "超市二维码")
    @GetMapping("/supermarketQrCode")
    @CrossOrigin
-   public void supermarketQrCode (HttpServletResponse response,@RequestParam("userId") Long userId) {
+   @CheckToken
+   public void supermarketQrCode (HttpServletResponse response) {
+
+      UserLoginQuery user = localUser.getUser("user");
 
       VoucherQrCodeVo vo = new VoucherQrCodeVo();
-      vo.setUserId(userId);
-      String url = suQrUrl + "?userId=" + userId;
-      vo.setQrCodeUrl(url);
+      vo.setUserId(user.getId());
+      vo.setQrCodeUrl(suQrUrl);
       vo.setTypeName("超市");
       vo.setTypeMoney(10.0);
 
@@ -119,12 +123,14 @@ public class QrCodeController {
    @ApiOperation(value = "建材二维码", notes = "建材二维码")
    @GetMapping("/buildingMaterialQrCode")
    @CrossOrigin
-   public void buildingMaterialQrCode (HttpServletResponse response, @RequestParam("userId") Long userId) {
+   @CheckToken
+   public void buildingMaterialQrCode (HttpServletResponse response) {
+
+      UserLoginQuery user = localUser.getUser("user");
 
       VoucherQrCodeVo vo = new VoucherQrCodeVo();
-      vo.setUserId(userId);
-      String url = buQrUrl + "?userId=" + userId;
-      vo.setQrCodeUrl(url);
+      vo.setUserId(user.getId());
+      vo.setQrCodeUrl(buQrUrl);
       vo.setTypeName("建材");
       vo.setTypeMoney(30.0);
 

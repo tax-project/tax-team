@@ -43,6 +43,9 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
    @Autowired
    private IUserService userService;
 
+   @Autowired
+   private LocalUser localUser;
+
    /**
     * 增加凭证(二维码信息)
     * @param vo
@@ -79,13 +82,15 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
 
    /**
     * 根据用户id返回展示所有消费者的二维码信息
-    * @param userId
     * @return
     */
    @Override
-   public List<VoucherReturnQrCodeVo> listAllQrCode(Long userId) {
+   public List<VoucherReturnQrCodeVo> listAllQrCode() {
+
+      UserLoginQuery user = localUser.getUser("user");
+
       LambdaQueryWrapper<Voucher> wrapper = new LambdaQueryWrapper<Voucher>()
-            .eq(Voucher::getUserId,userId);
+            .eq(Voucher::getUserId,user.getId());
 
       List<Voucher> list = baseMapper.selectList(wrapper);
 
@@ -97,6 +102,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
          vo.setTypeName(voucher.getTypeName());
          vo.setTypeMoney(voucher.getTypeMoney());
          vo.setQrCodeStatus(voucher.getQrCodeStatus());
+         vo.setQrCodeUrl(voucher.getQrCodeUrl());
          result.add(vo);
       }
       return result;
@@ -109,8 +115,10 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
     */
    @Override
    public void uploadVoucher(OptionBo bo) {
+
+      UserLoginQuery user = localUser.getUser("user");
       //先判断该操作员有没有权限上传
-      Integer status = userService.queryOptionStatus(bo.getOptionUserId());
+      Integer status = userService.queryOptionStatus(user.getId());
 
       if (status == 0) {
          throw new ApplicationException(CodeType.SERVICE_ERROR, "您今天没有上传权限,请联系管理员");
@@ -132,7 +140,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       voucher.setDateTime(LocalDateTime.now());
       voucher.setTicketUrl(bo.getTicketUrl());
       voucher.setUpdateUser(bo.getOptionUser());
-      voucher.setUpdateUserId(bo.getOptionUserId());
+      voucher.setUpdateUserId(bo.getId());
       //修改二维码的状态，表示失效
       voucher.setQrCodeStatus(1);
 
