@@ -17,7 +17,6 @@ import com.dkm.voucher.service.IVoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.security.provider.certpath.PKIXTimestampParameters;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,8 +33,6 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
 
 
    private final static Integer ADMIN_NUM = 3;
-   @Autowired
-   private LocalUser localUser;
 
    @Autowired
    private IdGenerator idGenerator;

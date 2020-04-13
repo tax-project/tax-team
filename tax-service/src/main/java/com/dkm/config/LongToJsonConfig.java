@@ -27,6 +27,7 @@ import java.util.List;
 public class LongToJsonConfig extends WebMvcConfigurationSupport implements WebMvcConfigurer {
 
 
+    @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -97,12 +98,14 @@ public class LongToJsonConfig extends WebMvcConfigurationSupport implements WebM
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations(
-              "classpath:/static/");
+//        registry.addResourceHandler("/**").addResourceLocations(
+//              "classpath:/static/");
         registry.addResourceHandler("swagger-ui.html").addResourceLocations(
               "classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations(
               "classpath:/META-INF/resources/webjars/");
+        //java/software/tomcat8.5/bin
+        registry.addResourceHandler("/img/**").addResourceLocations("file:/root/tax-img/");
         super.addResourceHandlers(registry);
     }
 

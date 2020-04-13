@@ -82,7 +82,7 @@ public class FileUtils {
    }
 
    public Path name2Path(String fileName) {
-      String fileStorePath = "tax-img";
+      String fileStorePath = "/root/tax-img";
       return Paths.get(fileStorePath, fileName.substring(0, 8), fileName);
    }
 
