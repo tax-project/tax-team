@@ -11,11 +11,6 @@ import lombok.Data;
 public class OptionBo {
 
    /**
-    * 操作人用户Id
-    */
-   private Long optionUserId;
-
-   /**
     * 小票url
     */
    private String ticketUrl;

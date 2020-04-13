@@ -2,6 +2,7 @@ package com.dkm.problem.controller;
 
 import com.dkm.constanct.CodeType;
 import com.dkm.exception.ApplicationException;
+import com.dkm.jwt.islogin.CheckToken;
 import com.dkm.problem.entity.Problem;
 import com.dkm.problem.entity.vo.ProblemVo;
 import com.dkm.problem.service.IProblemService;
@@ -40,6 +41,7 @@ public class ProblemController {
    })
    @PostMapping("/insertProblem")
    @CrossOrigin
+   @CheckToken
    public void insertProblem (@RequestBody ProblemVo vo) {
 
       if (StringUtils.isBlank(vo.getAnswerA()) || StringUtils.isBlank(vo.getAnswerB()) || StringUtils.isBlank(vo.getAnswerC())
@@ -56,6 +58,7 @@ public class ProblemController {
    @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long", paramType = "path")
    @GetMapping("/deleteProblem")
    @CrossOrigin
+   @CheckToken
    public void deleteProblem (@RequestParam("id") Long id) {
 
       if (id == null) {
@@ -71,6 +74,7 @@ public class ProblemController {
    @ApiOperation(value = "随机返回5条数据", notes = "随机返回5条数据")
    @GetMapping("/listProblem")
    @CrossOrigin
+   @CheckToken
    public List<Problem> listProblem () {
       return problemService.listProblem ();
    }

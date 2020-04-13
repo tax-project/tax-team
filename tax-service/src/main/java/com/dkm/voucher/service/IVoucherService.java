@@ -21,11 +21,10 @@ public interface IVoucherService {
    void insertVoucher (VoucherQrCodeVo vo);
 
    /**
-    * 根据用户id返回展示所有消费者的二维码信息
-    * @param userId
+    * 展示消费者的二维码信息
     * @return
     */
-   List<VoucherReturnQrCodeVo> listAllQrCode (Long userId);
+   List<VoucherReturnQrCodeVo> listAllQrCode ();
 
    /**
     * 操作员上传凭证
