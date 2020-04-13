@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dkm.constanct.CodeType;
 import com.dkm.exception.ApplicationException;
+import com.dkm.jwt.contain.LocalUser;
+import com.dkm.jwt.entity.UserLoginQuery;
 import com.dkm.user.service.IUserService;
 import com.dkm.utils.IdGenerator;
 import com.dkm.voucher.dao.VoucherMapper;
@@ -15,6 +17,7 @@ import com.dkm.voucher.service.IVoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.security.provider.certpath.PKIXTimestampParameters;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,6 +31,11 @@ import java.util.List;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> implements IVoucherService {
+
+
+   private final static Integer ADMIN_NUM = 3;
+   @Autowired
+   private LocalUser localUser;
 
    @Autowired
    private IdGenerator idGenerator;
@@ -134,5 +142,19 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       if (update <= 0) {
          throw new ApplicationException(CodeType.SERVICE_ERROR, "上传失败");
       }
+   }
+
+   /**
+    * @Author: HuangJie
+    * @return 获得所有的支付记录
+    */
+   @Override
+   public List<Voucher> listAllVoucher() {
+      UserLoginQuery localUserUser = localUser.getUser("user");
+      Integer roleStatus = localUserUser.getRoleStatus();
+      if (!roleStatus.equals(ADMIN_NUM)){
+         throw new ApplicationException(CodeType.SERVICE_ERROR, "您的权限不够");
+      }
+      return baseMapper.selectList(null);
    }
 }

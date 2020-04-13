@@ -1,9 +1,9 @@
 package com.dkm.voucher.service;
 
+import com.dkm.voucher.entity.Voucher;
 import com.dkm.voucher.entity.bo.OptionBo;
 import com.dkm.voucher.entity.vo.VoucherQrCodeVo;
 import com.dkm.voucher.entity.vo.VoucherReturnQrCodeVo;
-
 import java.util.List;
 
 /**
@@ -32,4 +32,10 @@ public interface IVoucherService {
     * @param bo
     */
    void uploadVoucher (OptionBo bo);
+
+   /**
+    * 支付报表
+    * @return 获得所有的支付记录
+    */
+   List<Voucher> listAllVoucher();
 }

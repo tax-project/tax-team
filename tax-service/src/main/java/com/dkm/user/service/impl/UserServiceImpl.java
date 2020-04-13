@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.dkm.constanct.CodeType;
 import com.dkm.exception.ApplicationException;
+import com.dkm.jwt.contain.LocalUser;
+import com.dkm.jwt.entity.UserLoginQuery;
 import com.dkm.user.dao.UserMapper;
 import com.dkm.user.entity.User;
 import com.dkm.user.entity.bo.UserBO;
@@ -16,7 +18,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +31,16 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements IUserService {
 
+    private final static Integer ADMIN_NUM = 3;
+
     @Autowired
     private WeChatUtil weChatUtil;
     @Autowired
     private UserMapper userMapper;
     @Autowired
     private IdGenerator idGenerator;
+    @Autowired
+    private LocalUser localUser;
     @Override
     public UserBO bindUserInformation(String code, Integer status) {
         try {
@@ -98,6 +103,11 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<UserVO> allOperator() {
+        UserLoginQuery localUserUser = localUser.getUser("user");
+        Integer roleStatus = localUserUser.getRoleStatus();
+        if (!roleStatus.equals(ADMIN_NUM)){
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "您的权限不够");
+        }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("role_status",2);
         List<User> users = userMapper.selectList(queryWrapper);
@@ -114,6 +124,11 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean operationPermission(Long id,Integer status) {
+        UserLoginQuery localUserUser = localUser.getUser("user");
+        Integer roleStatus = localUserUser.getRoleStatus();
+        if (!roleStatus.equals(ADMIN_NUM)){
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "您的权限不够");
+        }
         User user = new User();
         user.setId(id);
         user.setStatus(status);
