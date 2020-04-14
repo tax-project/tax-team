@@ -2,11 +2,12 @@ package com.dkm.voucher.service;
 
 import com.dkm.count.entity.bo.CountBO;
 import com.dkm.voucher.entity.Voucher;
+import com.dkm.voucher.entity.bo.IdVo;
 import com.dkm.voucher.entity.bo.OptionBo;
 import com.dkm.voucher.entity.vo.VoucherQrCodeVo;
 import com.dkm.voucher.entity.vo.VoucherReturnQrCodeVo;
+
 import java.util.List;
-import java.util.Map;
 
 /**
  * 凭证
@@ -19,8 +20,9 @@ public interface IVoucherService {
    /**
     * 增加二维码信息
     * @param vo
+    * @return
     */
-   void insertVoucher (VoucherQrCodeVo vo);
+   IdVo insertVoucher (VoucherQrCodeVo vo);
 
    /**
     * 展示消费者的二维码信息

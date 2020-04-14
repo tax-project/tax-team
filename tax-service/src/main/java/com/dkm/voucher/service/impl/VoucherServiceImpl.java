@@ -1,7 +1,6 @@
 package com.dkm.voucher.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dkm.constanct.CodeType;
 import com.dkm.count.entity.bo.CountBO;
@@ -12,6 +11,7 @@ import com.dkm.user.service.IUserService;
 import com.dkm.utils.IdGenerator;
 import com.dkm.voucher.dao.VoucherMapper;
 import com.dkm.voucher.entity.Voucher;
+import com.dkm.voucher.entity.bo.IdVo;
 import com.dkm.voucher.entity.bo.OptionBo;
 import com.dkm.voucher.entity.vo.VoucherQrCodeVo;
 import com.dkm.voucher.entity.vo.VoucherReturnQrCodeVo;
@@ -23,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.zip.CheckedOutputStream;
 
 /**
  * @author qf
@@ -52,13 +50,15 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
     * @param vo
     */
    @Override
-   public void insertVoucher(VoucherQrCodeVo vo) {
+   public IdVo insertVoucher(VoucherQrCodeVo vo) {
 
       //先查询该用户是否已经有二维码了
       LambdaQueryWrapper<Voucher> wrapper = new LambdaQueryWrapper<Voucher>()
             .eq(Voucher::getUserId,vo.getUserId());
 
       Integer count = baseMapper.selectCount(wrapper);
+
+      IdVo idVo = new IdVo();
 
       if (count < 3) {
          Voucher voucher = new Voucher();
@@ -77,8 +77,12 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
          if (insert <= 0) {
             throw new ApplicationException(CodeType.SERVICE_ERROR, "添加二维码信息失败");
          }
+
+         idVo.setId(id);
+         return idVo;
       }
 
+      return null;
    }
 
    /**
