@@ -34,8 +34,6 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
 
 
    private final static Integer ADMIN_NUM = 3;
-   @Autowired
-   private LocalUser localUser;
 
    @Autowired
    private IdGenerator idGenerator;
