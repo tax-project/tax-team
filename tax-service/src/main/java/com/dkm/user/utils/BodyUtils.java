@@ -3,12 +3,11 @@ package com.dkm.user.utils;
 import com.alibaba.fastjson.JSONObject;
 import com.dkm.constanct.CodeType;
 import com.dkm.exception.ApplicationException;
-import org.springframework.stereotype.Component;
+
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
-import java.nio.channels.ClosedChannelException;
-import java.util.Arrays;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * @Author: HuangJie
@@ -28,7 +27,6 @@ public class BodyUtils {
             }
             inputStream.close();
             stream.close();
-            System.out.println(stream.toString());
             return JSONObject.parseObject(stream.toString());
         } catch (IOException e) {
             throw new ApplicationException(CodeType.SERVICE_ERROR,"请求Body内的数据获取异常");
