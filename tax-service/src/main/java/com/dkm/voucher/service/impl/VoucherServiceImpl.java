@@ -1,8 +1,10 @@
 package com.dkm.voucher.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dkm.constanct.CodeType;
+import com.dkm.count.entity.bo.CountBO;
 import com.dkm.exception.ApplicationException;
 import com.dkm.jwt.contain.LocalUser;
 import com.dkm.jwt.entity.UserLoginQuery;
@@ -21,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.zip.CheckedOutputStream;
 
 /**
  * @author qf
@@ -161,5 +165,22 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
          throw new ApplicationException(CodeType.SERVICE_ERROR, "您的权限不够");
       }
       return baseMapper.selectList(null);
+   }
+
+   @Override
+   public CountBO paymentOverview() {
+      UserLoginQuery user = localUser.getUser("user");
+      if (!user.getRoleStatus().equals(ADMIN_NUM)){
+         throw new ApplicationException(CodeType.SERVICE_ERROR, "您的权限不够");
+      }
+      CountBO countBO = baseMapper.paymentOverview();
+      if (countBO==null){
+         throw new ApplicationException(CodeType.SERVICE_ERROR, "查询异常");
+      }
+      countBO.setRemainMoney(100000-countBO.getIssuedMoney());
+      countBO.setSupermarketMuch(baseMapper.supermarketMuch());
+      countBO.setRestaurantMuch(baseMapper.restaurantMuch());
+      countBO.setBuildMuch(baseMapper.buildMuch());
+      return countBO;
    }
 }

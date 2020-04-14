@@ -1,10 +1,12 @@
 package com.dkm.voucher.service;
 
+import com.dkm.count.entity.bo.CountBO;
 import com.dkm.voucher.entity.Voucher;
 import com.dkm.voucher.entity.bo.OptionBo;
 import com.dkm.voucher.entity.vo.VoucherQrCodeVo;
 import com.dkm.voucher.entity.vo.VoucherReturnQrCodeVo;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 凭证
@@ -34,7 +36,15 @@ public interface IVoucherService {
 
    /**
     * 支付报表
+    * @Author: HuangJie
     * @return 获得所有的支付记录
     */
    List<Voucher> listAllVoucher();
+
+   /**
+    * 获取消费总览
+    * @Author: HuangJie
+    * @return 消费总览数据
+    */
+   CountBO paymentOverview();
 }
