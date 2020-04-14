@@ -10,7 +10,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -21,19 +20,18 @@ import java.io.IOException;
  * @Version: 1.0V
  */
 @Component
-//@PropertySource("classpath:config.properties")
 public class WeChatUtil {
 
-    public static final String APP_ID = "appid";
-    public static final String SECRET = "secret";
-    public static final String CODE = "code";
-    public static final String GRANT_TYPE = "grant_type";
-    public static final String AUTHORIZATION_CODE = "authorization_code";
-    public static final String OPEN_ID = "openid";
-    public static final String ACCESS_TOKEN = "access_token";
-    public static final String OK = "ok";
-    public static final String UTF = "utf-8";
-    public static final String ISO = "iso8859-1";
+    private static final String APP_ID = "appid";
+    private static final String SECRET = "secret";
+    private static final String CODE = "code";
+    private static final String GRANT_TYPE = "grant_type";
+    private static final String AUTHORIZATION_CODE = "authorization_code";
+    private static final String OPEN_ID = "openid";
+    private static final String ACCESS_TOKEN = "access_token";
+    private static final String OK = "ok";
+    private static final String UTF = "utf-8";
+    private static final String ISO = "iso8859-1";
 
     @Value("${weChat.access.token.url}")
     private String weChatAccessTokenUrl;

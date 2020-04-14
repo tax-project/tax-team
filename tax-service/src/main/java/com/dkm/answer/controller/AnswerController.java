@@ -2,6 +2,7 @@ package com.dkm.answer.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.dkm.answer.service.IAnswerService;
+import com.dkm.jwt.islogin.CheckToken;
 import com.dkm.user.utils.BodyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -36,6 +37,7 @@ public class AnswerController {
     })
     @PostMapping("/submit")
     @CrossOrigin
+    @CheckToken
     public Boolean submitAnswer(HttpServletRequest request){
         JSONObject json = BodyUtils.bodyJson(request);
         String answer = json.getString("answer");

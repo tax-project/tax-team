@@ -25,8 +25,8 @@ file:
   url: http://39.108.118.48:8080/tax-service
 # 调微信支付接口的账号密码
 wx:
-  userName: 20200411200848698625624062988288
-  passWord: d7cef41ed7324e8393a2f8967669cdeb
+  userName: 20200413104508699208547560493056
+  passWord: f09689454e36460cbc643eaa256f2c14
   # 相关微信接口
   authLogin: http://39.108.118.48:8080/dkm_pay_resource/v1/auth/authLogin
   payToPerson: http://39.108.118.48:8080/dkm_pay_resource/v1/wxPay/toPerson

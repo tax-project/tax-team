@@ -53,8 +53,7 @@ public class WxPayController {
    @GetMapping("/person")
    @CrossOrigin
    @CheckToken
-   public Object orders(@RequestParam("openId") String openId,
-                        @RequestParam("price") Double price) {
+   public Object orders(@RequestParam("price") Double price) {
 
 
       UserLoginQuery user = localUser.getUser("user");

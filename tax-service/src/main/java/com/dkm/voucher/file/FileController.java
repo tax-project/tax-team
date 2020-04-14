@@ -4,7 +4,9 @@ import com.dkm.constanct.CodeType;
 import com.dkm.exception.ApplicationException;
 import com.dkm.utils.IdGenerator;
 import com.dkm.voucher.file.utils.FileUtils;
+import com.dkm.voucher.file.utils.FileVo;
 import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,7 @@ import java.nio.file.Path;
  * @vesion 1.0
  **/
 @Api(tags = "上传文件api")
+@Slf4j
 @RestController
 @RequestMapping("/v1/file")
 public class FileController {
@@ -45,7 +48,7 @@ public class FileController {
     */
    @PostMapping("/storeFile")
    @CrossOrigin
-   public String storeFile(@RequestBody MultipartFile file) throws Exception{
+   public FileVo storeFile(@RequestBody MultipartFile file) throws Exception{
 
       if (file == null) {
          throw new ApplicationException(CodeType.PARAMETER_ERROR, "未上传文件");
@@ -73,8 +76,10 @@ public class FileController {
             //复制文件到指定文件夹下面
             String newPath = path.toString() + extraName;
             File toFile = fileUtils.multipartFileToFile(file,newPath);
-            System.out.println(extraName);
-            return  fileUrl + "/" + fileName.substring(0, 8) + "/"  + fileName + extraName;
+            FileVo vo = new FileVo();
+            String url = fileUrl + "/" + fileName.substring(0, 8) + "/"  + fileName + extraName;
+            vo.setFileUrl(url);
+            return vo;
          } catch (IOException e) {
             throw new IllegalArgumentException("文件上传失败");
          }
