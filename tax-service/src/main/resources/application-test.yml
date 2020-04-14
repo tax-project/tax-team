@@ -15,11 +15,11 @@ qrCode:
   buQrUrl: http://39.108.118.48:8080/tax-service/v1/qrCode/buildingMaterialQrCode
   buildingMaterialQrCode: http://www.baidu.com
   #  管理员
-  admin: http://www.baidu.com
+  admin: http://zhdtone.top/#/pages/admin/admin
   #  操作员
-  operator: http://www.baidu.com
+  operator: http://zhdtone.top/#/pages/operator/operator
   #  用户
-  user: http://192.168.10.176:8080
+  user: http://zhdtone.top
 # 图片上传到本工程服务器
 file:
   url: http://39.108.118.48:9091/img

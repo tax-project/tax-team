@@ -33,4 +33,9 @@ public class ProblemVo {
     * 答案D
     */
    private String answerD;
+
+   /**
+    * 正确答案
+    */
+   private String answer;
 }
