@@ -38,6 +38,7 @@ public class ProblemController {
          @ApiImplicitParam(name = "answerB", value = "答案B", required = true, dataType = "String", paramType = "path"),
          @ApiImplicitParam(name = "answerC", value = "答案C", required = true, dataType = "String", paramType = "path"),
          @ApiImplicitParam(name = "answerD", value = "答案D", required = true, dataType = "String", paramType = "path"),
+         @ApiImplicitParam(name = "answer", value = "正确答案", required = true, dataType = "String", paramType = "path"),
    })
    @PostMapping("/insertProblem")
    @CrossOrigin
@@ -45,7 +46,7 @@ public class ProblemController {
    public void insertProblem (@RequestBody ProblemVo vo) {
 
       if (StringUtils.isBlank(vo.getAnswerA()) || StringUtils.isBlank(vo.getAnswerB()) || StringUtils.isBlank(vo.getAnswerC())
-      || StringUtils.isBlank(vo.getAnswerD()) || StringUtils.isBlank(vo.getProblemName())) {
+      || StringUtils.isBlank(vo.getAnswerD()) || StringUtils.isBlank(vo.getProblemName()) || StringUtils.isBlank(vo.getAnswer())) {
          throw new ApplicationException(CodeType.PARAMETER_ERROR, "参数不能为空");
       }
 
@@ -74,7 +75,7 @@ public class ProblemController {
    @ApiOperation(value = "随机返回5条数据", notes = "随机返回5条数据")
    @GetMapping("/listProblem")
    @CrossOrigin
-   @CheckToken
+//   @CheckToken
    public List<Problem> listProblem () {
       return problemService.listProblem ();
    }

@@ -44,6 +44,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
          problem.setAnswerB(vo.getAnswerB());
          problem.setAnswerC(vo.getAnswerC());
          problem.setAnswerD(vo.getAnswerD());
+         problem.setAnswer(vo.getAnswer());
 
          int insert = baseMapper.insert(problem);
 
@@ -60,6 +61,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
          problem.setAnswerB(vo.getAnswerB());
          problem.setAnswerC(vo.getAnswerC());
          problem.setAnswerD(vo.getAnswerD());
+         problem.setAnswer(vo.getAnswer());
 
          int update = baseMapper.updateById(problem);
 
@@ -90,13 +92,6 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
       //大于5条则随机抽取5条
       Set<Integer> set = getList(list.size());
 
-      if (set.size() < 5) {
-         for (int i = 0; i <= 5 - set.size(); i++) {
-            int random = (int) (Math.random()*list.size());
-            set.add(random);
-         }
-      }
-
       Set<Problem> result = new HashSet<>();
       for (int i = 0; i <= list.size()-1; i++) {
          for (Integer integer : set) {
@@ -107,21 +102,28 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
       //将set转List
       List<Problem> resultList = new ArrayList<>();
       resultList.addAll(result);
-
       return resultList;
    }
 
    public Set<Integer> getList (Integer size) {
+      Set<Integer> set = getSet(size);
+      if (set.size() < 5) {
+         while (true) {
+            Set<Integer> set1 = getSet(size);
+            if (set1.size() == 5) {
+               return set1;
+            }
+         }
+      }
+      return set;
+   }
+
+
+   public Set<Integer> getSet (Integer size) {
       Set<Integer> set = new HashSet<Integer>();
       for (int i = 0; i <= 4; i++) {
          int random = (int) (Math.random()*size);
          set.add(random);
-      }
-      if (set.size() < 5) {
-         for (int i = 0; i <= 5 - set.size(); i++) {
-            int random = (int) (Math.random()*size);
-            set.add(random);
-         }
       }
       return set;
    }
