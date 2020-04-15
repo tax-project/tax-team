@@ -29,10 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-<<<<<<< HEAD
 
-=======
->>>>>>> 18ed262f9ee14c8ed6e5d959472b83ac4d6b0238
 
 /**
  * @author qf
