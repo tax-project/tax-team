@@ -1,12 +1,13 @@
 package com.dkm.voucher.service;
 
 import com.dkm.count.entity.bo.CountBO;
-import com.dkm.voucher.entity.Voucher;
+import com.dkm.count.entity.bo.ExcelBO;
 import com.dkm.voucher.entity.bo.OptionBo;
 import com.dkm.voucher.entity.vo.VoucherQrCodeVo;
 import com.dkm.voucher.entity.vo.VoucherReturnQrCodeVo;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import java.util.List;
-import java.util.Map;
 
 /**
  * 凭证
@@ -39,7 +40,7 @@ public interface IVoucherService {
     * @Author: HuangJie
     * @return 获得所有的支付记录
     */
-   List<Voucher> listAllVoucher();
+   List<ExcelBO> listAllVoucher();
 
    /**
     * 获取消费总览
@@ -47,4 +48,10 @@ public interface IVoucherService {
     * @return 消费总览数据
     */
    CountBO paymentOverview();
+
+   /**
+    * 导出支付记录的Excel表格
+    * @return
+    */
+   HSSFWorkbook exportExcel();
 }

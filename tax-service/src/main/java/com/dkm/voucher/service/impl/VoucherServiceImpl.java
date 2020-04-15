@@ -1,14 +1,17 @@
 package com.dkm.voucher.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dkm.constanct.CodeType;
 import com.dkm.count.entity.bo.CountBO;
+import com.dkm.count.entity.bo.ExcelBO;
 import com.dkm.exception.ApplicationException;
 import com.dkm.jwt.contain.LocalUser;
 import com.dkm.jwt.entity.UserLoginQuery;
+import com.dkm.user.dao.UserMapper;
+import com.dkm.user.entity.User;
 import com.dkm.user.service.IUserService;
+import com.dkm.utils.ExcelUtils;
 import com.dkm.utils.IdGenerator;
 import com.dkm.voucher.dao.VoucherMapper;
 import com.dkm.voucher.entity.Voucher;
@@ -16,6 +19,7 @@ import com.dkm.voucher.entity.bo.OptionBo;
 import com.dkm.voucher.entity.vo.VoucherQrCodeVo;
 import com.dkm.voucher.entity.vo.VoucherReturnQrCodeVo;
 import com.dkm.voucher.service.IVoucherService;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +28,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.CheckedOutputStream;
+import java.util.stream.Collectors;
 
 /**
  * @author qf
@@ -46,6 +50,9 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
 
    @Autowired
    private LocalUser localUser;
+
+   @Autowired
+   private UserMapper userMapper;
 
    /**
     * 增加凭证(二维码信息)
@@ -158,13 +165,29 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
     * @return 获得所有的支付记录
     */
    @Override
-   public List<Voucher> listAllVoucher() {
+   public List<ExcelBO> listAllVoucher() {
       UserLoginQuery localUserUser = localUser.getUser("user");
       Integer roleStatus = localUserUser.getRoleStatus();
       if (!roleStatus.equals(ADMIN_NUM)){
          throw new ApplicationException(CodeType.SERVICE_ERROR, "您的权限不够");
       }
-      return baseMapper.selectList(null);
+      List<Voucher> vouchers = baseMapper.selectList(null);
+      List<User> users = userMapper.selectList(null);
+      Map<Long, User> collect = users.stream().collect(Collectors.toMap(User::getId, user -> user));
+      return vouchers.stream().map(voucher -> {
+         ExcelBO excelBO = new ExcelBO();
+         excelBO.setId(voucher.getId());
+         excelBO.setUserId(voucher.getUserId());
+         excelBO.setUserNickName(collect.get(voucher.getUserId()).getWxNickName());
+         excelBO.setTypeName(voucher.getTypeName());
+         excelBO.setTicketUrl(voucher.getTicketUrl());
+         excelBO.setPayMoney(voucher.getPayMoney());
+         excelBO.setPayTime(voucher.getPayTime());
+         excelBO.setTaxUserId(voucher.getUpdateUserId());
+         excelBO.setTaxNickName(collect.get(voucher.getUpdateUserId()).getWxNickName());
+         excelBO.setTaxUserName(voucher.getUpdateUser());
+         return excelBO;
+      }).collect(Collectors.toList());
    }
 
    @Override
@@ -182,5 +205,39 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       countBO.setRestaurantMuch(baseMapper.restaurantMuch());
       countBO.setBuildMuch(baseMapper.buildMuch());
       return countBO;
+   }
+
+   @Override
+   public HSSFWorkbook exportExcel() {
+      UserLoginQuery user = localUser.getUser("user");
+      if (!user.getRoleStatus().equals(ADMIN_NUM)){
+         throw new ApplicationException(CodeType.SERVICE_ERROR, "您的权限不够");
+      }
+      List<String> heard = new ArrayList<>();
+      heard.add("支付订单编号");
+      heard.add("用户的微信昵称");
+      heard.add("优惠卷名称");
+      heard.add("小票或者发票地址");
+      heard.add("转账金额");
+      heard.add("转账时间");
+      heard.add("验证税务人员微信昵称");
+      heard.add("验证税务人员名字");
+
+      List<List<String>> collect = this.listAllVoucher().stream().map(excelBO -> {
+         List<String> list = new ArrayList<>();
+         list.add(String.valueOf(excelBO.getId()));
+         list.add(String.valueOf(excelBO.getUserNickName()));
+         list.add(String.valueOf(excelBO.getTypeName()));
+         list.add(String.valueOf(excelBO.getTicketUrl()));
+         list.add(String.valueOf(excelBO.getPayMoney()));
+         list.add(String.valueOf(excelBO.getPayTime()));
+         list.add(String.valueOf(excelBO.getTaxNickName()));
+         list.add(String.valueOf(excelBO.getTaxUserName()));
+         return list;
+      }).collect(Collectors.toList());
+
+      return ExcelUtils.expExcel(heard, collect, null);
+
+
    }
 }
