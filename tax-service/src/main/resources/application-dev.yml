@@ -22,7 +22,7 @@ qrCode:
   user: http://zhdtone.top
 # 图片上传到本工程服务器
 file:
-  url: http://47.92.133.46:8304/tax-service
+  url: http://47.92.133.46:8304/tax-service/img
 # 调微信支付接口的账号密码
 wx:
   userName: 20200413104508699208547560493056
