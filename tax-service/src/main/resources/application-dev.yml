@@ -6,27 +6,27 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 qrCode:
   #  餐厅
-  restaurant: http://www.baidu.com
-  reQrUrl: http://39.108.118.48:8080/tax-service/v1/qrCode/restaurantQrCode
+  restaurant: http://zhdtone.top/#/pages/operator/operator
+  reQrUrl: http://47.92.133.46:8304/tax-service/v1/qrCode/restaurant
   #  超市
-  supermarket: http://www.baidu.com
-  suQrUrl: http://39.108.118.48:8080/tax-service/v1/qrCode/supermarketQrCode
+  supermarket: http://zhdtone.top/#/pages/operator/operator
+  suQrUrl: http://47.92.133.46:8304/tax-service/v1/qrCode/supermarket
   #  建材
-  buildingMaterial: http://www.baidu.com
-  buQrUrl: http://39.108.118.48:8080/tax-service/v1/qrCode/buildingMaterialQrCode
+  buildingMaterial: http://zhdtone.top/#/pages/operator/operator
+  buQrUrl: http://47.92.133.46:8304/tax-service/v1/qrCode/buildingMaterial
   #  管理员
-  admin: http://www.baidu.com
+  admin: http://zhdtone.top/#/pages/admin/admin
   #  操作员
-  operator: http://www.baidu.com
+  operator: http://zhdtone.top/#/pages/operator/operator
   #  用户
-  user: http://192.168.10.176:8080
+  user: http://zhdtone.top
 # 图片上传到本工程服务器
 file:
-  url: http://39.108.118.48:8080/tax-service
+  url: http://47.92.133.46:8304/tax-service/img
 # 调微信支付接口的账号密码
 wx:
   userName: 20200413104508699208547560493056
   passWord: f09689454e36460cbc643eaa256f2c14
   # 相关微信接口
-  authLogin: http://39.108.118.48:8080/dkm_pay_resource/v1/auth/authLogin
-  payToPerson: http://39.108.118.48:8080/dkm_pay_resource/v1/wxPay/toPerson
+  authLogin: http://47.92.133.46:8303/dkm_pay_resource/v1/auth/authLogin
+  payToPerson: http://47.92.133.46:8303/dkm_pay_resource/v1/wxPay/toPerson

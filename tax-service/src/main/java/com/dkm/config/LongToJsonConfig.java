@@ -104,7 +104,6 @@ public class LongToJsonConfig extends WebMvcConfigurationSupport implements WebM
               "classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations(
               "classpath:/META-INF/resources/webjars/");
-        //java/software/tomcat8.5/bin
         registry.addResourceHandler("/img/**").addResourceLocations("file:/root/tax-img/");
         super.addResourceHandlers(registry);
     }

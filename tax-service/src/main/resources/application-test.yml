@@ -6,13 +6,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 qrCode:
   #  餐厅
-  reQrUrl: http://39.108.118.48:8080/tax-service/v1/qrCode/restaurantQrCode
+  reQrUrl: http://39.108.118.48:9091/tax-service/v1/qrCode/restaurantQrCode
   restaurantQrCode: http://www.baidu.com
   #  超市
-  suQrUrl: http://39.108.118.48:8080/tax-service/v1/qrCode/supermarketQrCode
+  suQrUrl: http://39.108.118.48:9091/tax-service/v1/qrCode/supermarketQrCode
   supermarketQrCode: http://www.baidu.com
   #  建材
-  buQrUrl: http://39.108.118.48:8080/tax-service/v1/qrCode/buildingMaterialQrCode
+  buQrUrl: http://39.108.118.48:9091/tax-service/v1/qrCode/buildingMaterialQrCode
   buildingMaterialQrCode: http://www.baidu.com
   #  管理员
   admin: http://zhdtone.top/#/pages/admin/admin
