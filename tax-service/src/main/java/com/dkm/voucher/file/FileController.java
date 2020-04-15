@@ -64,7 +64,7 @@ public class FileController {
          String fileName;
          do {
             //图片名称赋值
-            fileName = idGenerator.getOrderCode();
+            fileName = idGenerator.getShortNo();
             //保存路径赋值
             path = fileUtils.name2Path(fileName);
 

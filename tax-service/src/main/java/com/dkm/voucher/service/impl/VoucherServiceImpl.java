@@ -28,11 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-<<<<<<< HEAD
 import java.util.Map;
 import java.util.stream.Collectors;
-=======
->>>>>>> aa66a3f5cc94bac0534939d96f66b99a584afd1a
 
 /**
  * @author qf
@@ -158,7 +155,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       voucher.setDateTime(LocalDateTime.now());
       voucher.setTicketUrl(bo.getTicketUrl());
       voucher.setUpdateUser(bo.getOptionUser());
-      voucher.setUpdateUserId(bo.getId());
+      voucher.setUpdateUserId(user.getId());
       //修改二维码的状态，表示失效
       voucher.setQrCodeStatus(1);
 
