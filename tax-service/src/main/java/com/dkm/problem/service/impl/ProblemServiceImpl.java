@@ -105,6 +105,12 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
       return resultList;
    }
 
+   @Override
+   public List<Problem> allListProblem() {
+      return baseMapper.selectList(null);
+   }
+
+
    public Set<Integer> getList (Integer size) {
       Set<Integer> set = getSet(size);
       if (set.size() < 5) {
@@ -117,7 +123,6 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
       }
       return set;
    }
-
 
    public Set<Integer> getSet (Integer size) {
       Set<Integer> set = new HashSet<Integer>();

@@ -80,5 +80,12 @@ public class ProblemController {
       return problemService.listProblem ();
    }
 
+   @ApiOperation(value = "返回全部的题目", notes = "学习页面接口")
+   @GetMapping("/all/list/problem")
+   @CrossOrigin
+   public List<Problem> allListProblem(){
+      return problemService.allListProblem();
+   }
+
 
 }

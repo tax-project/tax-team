@@ -24,15 +24,12 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-<<<<<<< HEAD
 import java.util.Map;
 import java.util.stream.Collectors;
-=======
->>>>>>> aa66a3f5cc94bac0534939d96f66b99a584afd1a
+
 
 /**
  * @author qf
@@ -232,7 +229,6 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       heard.add("转账时间");
       heard.add("验证税务人员微信昵称");
       heard.add("验证税务人员名字");
-
       List<List<String>> collect = this.listAllVoucher().stream().map(excelBO -> {
          List<String> list = new ArrayList<>();
          list.add(String.valueOf(excelBO.getId()));
@@ -245,9 +241,6 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
          list.add(String.valueOf(excelBO.getTaxUserName()));
          return list;
       }).collect(Collectors.toList());
-
       return ExcelUtils.expExcel(heard, collect, null);
-
-
    }
 }

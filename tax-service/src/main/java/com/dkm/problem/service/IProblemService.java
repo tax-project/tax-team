@@ -31,4 +31,10 @@ public interface IProblemService {
     */
    List<Problem> listProblem ();
 
+   /**
+    * 返回全部的题目
+    * @return 题目集合
+    */
+   List<Problem> allListProblem();
+
 }
