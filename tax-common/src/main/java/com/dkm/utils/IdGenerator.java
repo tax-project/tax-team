@@ -73,6 +73,17 @@ public class IdGenerator {
         return time + numberId;
     }
 
+    public String getShortNo() {
+        String time = DateUtil.formatSimpleDateTime(LocalDateTime.now());
+
+
+        String s = time.substring(5, 14);
+
+        int randoms = (int) (Math.random() * 100);
+
+        return s + String.valueOf(randoms);
+    }
+
     /**
      * Twitter_Snowflake<br>
      * SnowFlake的结构如下(每部分用-分开):<br>

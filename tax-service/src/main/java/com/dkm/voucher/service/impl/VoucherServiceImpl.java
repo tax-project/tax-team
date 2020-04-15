@@ -29,7 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 18ed262f9ee14c8ed6e5d959472b83ac4d6b0238
 
 /**
  * @author qf
@@ -155,7 +158,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       voucher.setDateTime(LocalDateTime.now());
       voucher.setTicketUrl(bo.getTicketUrl());
       voucher.setUpdateUser(bo.getOptionUser());
-      voucher.setUpdateUserId(bo.getId());
+      voucher.setUpdateUserId(user.getId());
       //修改二维码的状态，表示失效
       voucher.setQrCodeStatus(1);
 
