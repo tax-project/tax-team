@@ -1,6 +1,7 @@
 package com.dkm.voucher.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dkm.constanct.CodeType;
 import com.dkm.count.entity.bo.CountBO;
@@ -178,7 +179,9 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       if (!roleStatus.equals(ADMIN_NUM)){
          throw new ApplicationException(CodeType.SERVICE_ERROR, "您的权限不够");
       }
-      List<Voucher> vouchers = baseMapper.selectList(null);
+      QueryWrapper<Voucher> queryWrapper = new QueryWrapper<>();
+      queryWrapper.isNotNull("update_user_id");
+      List<Voucher> vouchers = baseMapper.selectList(queryWrapper);
       List<User> users = userMapper.selectList(null);
       Map<Long, User> collect = users.stream().collect(Collectors.toMap(User::getId, user -> user));
       return vouchers.stream().map(voucher -> {
@@ -207,6 +210,11 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       if (countBO==null){
          throw new ApplicationException(CodeType.SERVICE_ERROR, "查询异常");
       }
+
+      if (countBO.getIssuedMoney()==null){
+         countBO.setIssuedMoney(0D);
+      }
+
       countBO.setRemainMoney(100000-countBO.getIssuedMoney());
       countBO.setSupermarketMuch(baseMapper.supermarketMuch());
       countBO.setRestaurantMuch(baseMapper.restaurantMuch());
