@@ -37,7 +37,7 @@ public class AnswerController {
     })
     @PostMapping("/submit")
     @CrossOrigin
-    @CheckToken
+//    @CheckToken
     public Boolean submitAnswer(HttpServletRequest request){
         JSONObject json = BodyUtils.bodyJson(request);
         String answer = json.getString("answer");

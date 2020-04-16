@@ -12,11 +12,13 @@ import com.dkm.exception.ApplicationException;
 import com.dkm.jwt.entity.UserLoginQuery;
 import com.dkm.user.dao.UserMapper;
 import com.dkm.user.entity.User;
+import com.dkm.utils.DateUtil;
 import com.dkm.utils.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -58,23 +60,21 @@ public class AnswerServiceImpl implements IAnswerService {
                 throw new ApplicationException(CodeType.SERVICE_ERROR, "答题数据存储失败");
             }
         }
+
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id",userId);
         User user = userMapper.selectOne(queryWrapper);
         if (user!=null){
             Integer updateMuch = user.getUpdateMuch();
             LocalDateTime updateTime = user.getUpdateTime();
+
             if (updateTime!=null){
-                int year = updateTime.getYear();
-                int month = updateTime.getDayOfMonth();
-                int day = updateTime.getDayOfYear();
                 //最后答题时间
-                StringBuilder pastTime = new StringBuilder();
-                pastTime.append(year).append(month).append(day);
+                String formatDate = DateUtil.formatDate(updateTime);
                 //现在时间
-                SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                 String nowTime = format.format(new Date());
-                if (nowTime.equals(pastTime.toString())){
+                if (nowTime.equals(formatDate)){
                     throw new ApplicationException(CodeType.SERVICE_ERROR, "今天已经领取过优惠卷了，请明天再试");
                 }
             }
@@ -82,7 +82,7 @@ public class AnswerServiceImpl implements IAnswerService {
             User user1 = new User();
             user1.setUpdateTime(LocalDateTime.now());
             UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.set("id",userId);
+            updateWrapper.eq("id",userId);
             int update = userMapper.update(user1, updateWrapper);
 
 
