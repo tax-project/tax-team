@@ -46,7 +46,6 @@ public class UserServiceImpl implements IUserService {
         try {
             WeChatUtilBO weChatUtilBO = weChatUtil.codeToUserInfo(code);
             User user = new User();
-
             user.setWxOpenId(weChatUtilBO.getDkmWeChatUserOpenId());
             user.setWxNickName(weChatUtilBO.getDkmWeChatUserNickName());
             user.setWxHeadImgUrl(weChatUtilBO.getDkmWeChatUserHeadImgUrl());
@@ -74,6 +73,7 @@ public class UserServiceImpl implements IUserService {
             QueryWrapper<User> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("wx_open_id",user.getWxOpenId());
             Integer count = userMapper.selectCount(queryWrapper);
+            System.out.println("count:"+count);
             if (count>0){
                 //用户已经存在，做用户信息更新
                 UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
@@ -85,6 +85,7 @@ public class UserServiceImpl implements IUserService {
                 QueryWrapper<User> wrapper = new QueryWrapper<>();
                 wrapper.eq("wx_open_id",user.getWxOpenId());
                 user = userMapper.selectOne(wrapper);
+                System.out.println("更新："+user.toString());
 
             }else {
                 //用户不存在，做用户信息添加
@@ -95,6 +96,7 @@ public class UserServiceImpl implements IUserService {
                 if (insert!=1){
                     throw new ApplicationException(CodeType.SERVICE_ERROR, "用户信息添加失败");
                 }
+                System.out.println("新增："+user.toString());
             }
 
             UserBO userBO = new UserBO();
