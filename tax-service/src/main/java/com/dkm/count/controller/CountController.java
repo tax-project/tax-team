@@ -54,7 +54,6 @@ public class CountController {
     @ApiOperation(value = "导出支付记录的Excel",notes = "HTTP头部携带Token",httpMethod = "GET")
     @ApiImplicitParam(name = "token",value = "用户Token，存放在HTTP的头部",required = true,dataType = "String",paramType = "header")
     @GetMapping("/export/excel")
-    @CheckToken
     @CrossOrigin
     public void exportExcel(HttpServletResponse response){
         HSSFWorkbook sheets = voucherService.exportExcel();

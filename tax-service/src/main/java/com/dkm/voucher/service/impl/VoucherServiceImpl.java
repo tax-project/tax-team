@@ -179,25 +179,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       if (!roleStatus.equals(ADMIN_NUM)){
          throw new ApplicationException(CodeType.SERVICE_ERROR, "您的权限不够");
       }
-      QueryWrapper<Voucher> queryWrapper = new QueryWrapper<>();
-      queryWrapper.isNotNull("update_user_id");
-      List<Voucher> vouchers = baseMapper.selectList(queryWrapper);
-      List<User> users = userMapper.selectList(null);
-      Map<Long, User> collect = users.stream().collect(Collectors.toMap(User::getId, user -> user));
-      return vouchers.stream().map(voucher -> {
-         ExcelBO excelBO = new ExcelBO();
-         excelBO.setId(voucher.getId());
-         excelBO.setUserId(voucher.getUserId());
-         excelBO.setUserNickName(collect.get(voucher.getUserId()).getWxNickName());
-         excelBO.setTypeName(voucher.getTypeName());
-         excelBO.setTicketUrl(voucher.getTicketUrl());
-         excelBO.setPayMoney(voucher.getPayMoney());
-         excelBO.setPayTime(voucher.getPayTime());
-         excelBO.setTaxUserId(voucher.getUpdateUserId());
-         excelBO.setTaxNickName(collect.get(voucher.getUpdateUserId()).getWxNickName());
-         excelBO.setTaxUserName(voucher.getUpdateUser());
-         return excelBO;
-      }).collect(Collectors.toList());
+      return this.allGetListExcelBO();
    }
 
    @Override
@@ -224,10 +206,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
 
    @Override
    public HSSFWorkbook exportExcel() {
-      UserLoginQuery user = localUser.getUser("user");
-      if (!user.getRoleStatus().equals(ADMIN_NUM)){
-         throw new ApplicationException(CodeType.SERVICE_ERROR, "您的权限不够");
-      }
+
       List<String> heard = new ArrayList<>();
       heard.add("支付订单编号");
       heard.add("用户的微信昵称");
@@ -237,7 +216,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       heard.add("转账时间");
       heard.add("验证税务人员微信昵称");
       heard.add("验证税务人员名字");
-      List<List<String>> collect = this.listAllVoucher().stream().map(excelBO -> {
+      List<List<String>> collect = this.allGetListExcelBO().stream().map(excelBO -> {
          List<String> list = new ArrayList<>();
          list.add(String.valueOf(excelBO.getId()));
          list.add(String.valueOf(excelBO.getUserNickName()));
@@ -250,5 +229,28 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
          return list;
       }).collect(Collectors.toList());
       return ExcelUtils.expExcel(heard, collect, null);
+   }
+
+
+   private List<ExcelBO> allGetListExcelBO(){
+      QueryWrapper<Voucher> queryWrapper = new QueryWrapper<>();
+      queryWrapper.isNotNull("update_user_id");
+      List<Voucher> vouchers = baseMapper.selectList(queryWrapper);
+      List<User> users = userMapper.selectList(null);
+      Map<Long, User> collect = users.stream().collect(Collectors.toMap(User::getId, user -> user));
+      return vouchers.stream().map(voucher -> {
+         ExcelBO excelBO = new ExcelBO();
+         excelBO.setId(voucher.getId());
+         excelBO.setUserId(voucher.getUserId());
+         excelBO.setUserNickName(collect.get(voucher.getUserId()).getWxNickName());
+         excelBO.setTypeName(voucher.getTypeName());
+         excelBO.setTicketUrl(voucher.getTicketUrl());
+         excelBO.setPayMoney(voucher.getPayMoney());
+         excelBO.setPayTime(voucher.getPayTime());
+         excelBO.setTaxUserId(voucher.getUpdateUserId());
+         excelBO.setTaxNickName(collect.get(voucher.getUpdateUserId()).getWxNickName());
+         excelBO.setTaxUserName(voucher.getUpdateUser());
+         return excelBO;
+      }).collect(Collectors.toList());
    }
 }
