@@ -98,7 +98,7 @@ public class QrCodeController {
       IdVo idVo = voucherService.insertVoucher(vo);
 
       //餐厅的二维码
-      String url = restaurantQrCode + "?id=" + idVo.getId() + "&typeName=" +vo.getTypeName() + "&typeMoney=" +vo.getTypeMoney();
+      String url = restaurantQrCode + "?id=" + idVo.getId() + "&typeName=" +vo.getTypeName() + "&typeMoney=" +vo.getTypeMoney() + "&openId=" +user.getWxOpenId();
       //操作员扫描
       qrCode.qrCode(url,response);
    }
@@ -120,7 +120,7 @@ public class QrCodeController {
       IdVo idVo = voucherService.insertVoucher(vo);
 
       //超市
-      String url = supermarketQrCode + "?id=" + idVo.getId() + "&typeName=" +vo.getTypeName() + "&typeMoney=" +vo.getTypeMoney();
+      String url = supermarketQrCode + "?id=" + idVo.getId() + "&typeName=" +vo.getTypeName() + "&typeMoney=" +vo.getTypeMoney() + "&openId=" +user.getWxOpenId();
 
       //超市二维码
       qrCode.qrCode(url,response);
@@ -142,7 +142,7 @@ public class QrCodeController {
 
       IdVo idVo = voucherService.insertVoucher(vo);
 
-      String url = buildingMaterialQrCode + "?id=" + idVo.getId() + "&typeName=" +vo.getTypeName() + "&typeMoney=" +vo.getTypeMoney();
+      String url = buildingMaterialQrCode + "?id=" + idVo.getId() + "&typeName=" +vo.getTypeName() + "&typeMoney=" +vo.getTypeMoney() + "&openId=" +user.getWxOpenId();
 
       //建材二维码
       qrCode.qrCode(url,response);

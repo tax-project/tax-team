@@ -6,8 +6,6 @@ import com.dkm.constanct.CodeType;
 import com.dkm.exception.ApplicationException;
 import com.dkm.httpclient.HttpClientUtils;
 import com.dkm.httpclient.HttpResult;
-import com.dkm.jwt.contain.LocalUser;
-import com.dkm.jwt.entity.UserLoginQuery;
 import com.dkm.jwt.islogin.CheckToken;
 import com.dkm.pay.wxPay.entity.ResultVo;
 import com.dkm.pay.wxPay.entity.WxLoginVo;
@@ -15,6 +13,7 @@ import com.dkm.pay.wxPay.entity.WxResultVo;
 import com.dkm.pay.wxPay.entity.WxTokenVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,9 +32,6 @@ public class WxPayController {
    @Autowired
    private HttpClientUtils apiService;
 
-   @Autowired
-   private LocalUser localUser;
-
    @Value("${wx.userName}")
    private String userName;
 
@@ -49,14 +45,15 @@ public class WxPayController {
    private String payToPerson;
 
    @ApiOperation(value = "微信企业给个人发红包", notes = "微信企业给个人发红包")
-   @ApiImplicitParam(name = "price", value = "支付金钱", required = true, dataType = "Double", paramType = "path")
+   @ApiImplicitParams({
+         @ApiImplicitParam(name = "price", value = "支付金钱", required = true, dataType = "Double", paramType = "path"),
+         @ApiImplicitParam(name = "openId", value = "openId", required = true, dataType = "String", paramType = "path")
+   })
    @GetMapping("/person")
    @CrossOrigin
    @CheckToken
-   public Object orders(@RequestParam("price") Double price) {
+   public Object orders(@RequestParam("price") Double price, @RequestParam("openId") String openId) {
 
-
-      UserLoginQuery user = localUser.getUser("user");
 
       WxLoginVo vo = new WxLoginVo();
       vo.setAuthUserKey(userName);
@@ -83,7 +80,7 @@ public class WxPayController {
       WxTokenVo data = wxResultVo.getData();
       String token = data.getToken();
       //调支付接口
-      String url = payToPerson + "?price=" + price + "&openId=" +user.getWxOpenId();
+      String url = payToPerson + "?price=" + price + "&openId=" +openId ;
 
       HttpResult result = apiService.get(url, token);
 
