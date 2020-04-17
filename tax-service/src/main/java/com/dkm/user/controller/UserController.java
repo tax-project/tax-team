@@ -125,4 +125,5 @@ public class UserController {
         Integer status = json.getInteger("status");
         return userService.operationPermission(id,status);
     }
+
 }

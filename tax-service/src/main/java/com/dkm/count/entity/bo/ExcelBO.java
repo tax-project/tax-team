@@ -18,7 +18,7 @@ public class ExcelBO {
     private String typeName;
     private String ticketUrl;
     private Double payMoney;
-    private LocalDateTime  payTime;
+    private String  payTime;
     private Long taxUserId;
     private String taxNickName;
     private String taxUserName;

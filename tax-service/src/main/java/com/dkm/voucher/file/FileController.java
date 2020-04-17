@@ -50,6 +50,9 @@ public class FileController {
    @CrossOrigin
    public FileVo storeFile(@RequestBody MultipartFile file) throws Exception{
 
+      System.out.println("file"+file+""+file.getContentType());
+
+
       if (file == null) {
          throw new ApplicationException(CodeType.PARAMETER_ERROR, "未上传文件");
       }

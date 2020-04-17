@@ -12,6 +12,7 @@ import com.dkm.jwt.entity.UserLoginQuery;
 import com.dkm.user.dao.UserMapper;
 import com.dkm.user.entity.User;
 import com.dkm.user.service.IUserService;
+import com.dkm.utils.DateUtil;
 import com.dkm.utils.ExcelUtils;
 import com.dkm.utils.IdGenerator;
 import com.dkm.voucher.dao.VoucherMapper;
@@ -246,7 +247,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
          excelBO.setTypeName(voucher.getTypeName());
          excelBO.setTicketUrl(voucher.getTicketUrl());
          excelBO.setPayMoney(voucher.getPayMoney());
-         excelBO.setPayTime(voucher.getPayTime());
+         excelBO.setPayTime(DateUtil.formatDateTime(voucher.getPayTime()));
          excelBO.setTaxUserId(voucher.getUpdateUserId());
          excelBO.setTaxNickName(collect.get(voucher.getUpdateUserId()).getWxNickName());
          excelBO.setTaxUserName(voucher.getUpdateUser());
