@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dkm.constanct.CodeType;
 import com.dkm.count.entity.bo.CountBO;
 import com.dkm.count.entity.bo.ExcelBO;
+import com.dkm.count.entity.bo.PayPageDataBO;
 import com.dkm.exception.ApplicationException;
 import com.dkm.jwt.contain.LocalUser;
 import com.dkm.jwt.entity.UserLoginQuery;
@@ -232,10 +233,32 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       return ExcelUtils.expExcel(heard, collect, null);
    }
 
+   @Override
+   public List<PayPageDataBO> payPageData(Integer page, Integer pageMuch) {
+//      UserLoginQuery userLogin = localUser.getUser("user");
+//      if (!userLogin.getRoleStatus().equals(ADMIN_NUM)){
+//         throw new ApplicationException(CodeType.SERVICE_ERROR, "您的权限不够");
+//      }
+
+      List<User> users = userMapper.selectList(null);
+      Map<Long, User> collect = users.stream().collect(Collectors.toMap(User::getId, user -> user));
+
+      ArrayList<Voucher> vouchers = baseMapper.payPageData((page-1) * pageMuch, pageMuch);
+      return vouchers.stream().map(voucher -> {
+         PayPageDataBO payPageDataBO = new PayPageDataBO();
+         payPageDataBO.setUserNickName(collect.get(voucher.getUserId()) == null ? "未知" : collect.get(voucher.getUserId()).getWxNickName());
+         payPageDataBO.setTaxNickName(collect.get(voucher.getUpdateUserId()) == null ? "未知" : collect.get(voucher.getUpdateUserId()).getWxNickName());
+         payPageDataBO.setPayMoney(voucher.getPayMoney() == null ? 0D : voucher.getPayMoney());
+         payPageDataBO.setPayTime(voucher.getPayTime() == null ? "未知" : DateUtil.formatDateTime(voucher.getPayTime()));
+         payPageDataBO.setImageUrl(voucher.getTicketUrl() == null ? "未知" : voucher.getTicketUrl());
+         return payPageDataBO;
+      }).collect(Collectors.toList());
+   }
+
 
    private List<ExcelBO> allGetListExcelBO(){
       QueryWrapper<Voucher> queryWrapper = new QueryWrapper<>();
-      queryWrapper.isNotNull("update_user_id");
+      queryWrapper.eq("qr_code_status","1");
       List<Voucher> vouchers = baseMapper.selectList(queryWrapper);
       List<User> users = userMapper.selectList(null);
       Map<Long, User> collect = users.stream().collect(Collectors.toMap(User::getId, user -> user));
@@ -246,8 +269,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
          excelBO.setUserNickName(collect.get(voucher.getUserId()).getWxNickName());
          excelBO.setTypeName(voucher.getTypeName());
          excelBO.setTicketUrl(voucher.getTicketUrl());
-         excelBO.setPayMoney(voucher.getPayMoney());
-         excelBO.setPayTime(DateUtil.formatDateTime(voucher.getPayTime()));
+         excelBO.setPayMoney(voucher.getPayMoney()==null?0D:voucher.getPayMoney());
+         excelBO.setPayTime(voucher.getPayTime()==null?"未支付":DateUtil.formatDateTime(voucher.getPayTime()));
          excelBO.setTaxUserId(voucher.getUpdateUserId());
          excelBO.setTaxNickName(collect.get(voucher.getUpdateUserId()).getWxNickName());
          excelBO.setTaxUserName(voucher.getUpdateUser());

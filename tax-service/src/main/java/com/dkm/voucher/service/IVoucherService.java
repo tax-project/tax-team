@@ -2,6 +2,7 @@ package com.dkm.voucher.service;
 
 import com.dkm.count.entity.bo.CountBO;
 import com.dkm.count.entity.bo.ExcelBO;
+import com.dkm.count.entity.bo.PayPageDataBO;
 import com.dkm.voucher.entity.bo.OptionBo;
 import com.dkm.voucher.entity.vo.VoucherQrCodeVo;
 import com.dkm.voucher.entity.vo.VoucherReturnQrCodeVo;
@@ -58,7 +59,17 @@ public interface IVoucherService {
 
    /**
     * 导出支付记录的Excel表格
-    * @return
+    * @Author: HuangJie
+    * @return excel表格
     */
    HSSFWorkbook exportExcel();
+
+   /**
+    * 分页之后的支付数据
+    * @Author: HuangJie
+    * @param page 开始的页数
+    * @param pageMuch 所需页数
+    * @return 分页数据
+    */
+    List<PayPageDataBO> payPageData(Integer page, Integer pageMuch);
 }

@@ -3,9 +3,12 @@ package com.dkm.voucher.dao;
 import com.dkm.IBaseMapper.IBaseMapper;
 import com.dkm.count.entity.bo.CountBO;
 import com.dkm.voucher.entity.Voucher;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -41,4 +44,13 @@ public interface VoucherMapper extends IBaseMapper<Voucher> {
      */
     @Select("select count(distinct user_id) from tb_voucher where type_money = 30")
     Integer buildMuch();
+
+    /**
+     * 获取分页之后的支付数据
+     * @param startPage 开始的条例
+     * @param pageMuch 拿到多少页
+     * @return 数据
+     */
+    @Select("select * from tb_voucher where qr_code_status = 1 limit #{startPage},#{pageMuch}")
+    ArrayList<Voucher> payPageData(@Param("startPage") Integer startPage, @Param("pageMuch") Integer pageMuch);
 }
