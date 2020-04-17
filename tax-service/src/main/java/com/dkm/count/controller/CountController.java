@@ -73,7 +73,7 @@ public class CountController {
             @ApiImplicitParam(name = "page",value = "第几页",required = true,dataType = "Integer",paramType = "body"),
             @ApiImplicitParam(name = "pageMuch",value = "每一页显示的数目",required = true,dataType = "Integer",paramType = "body")
     })
-//    @CheckToken
+    @CheckToken
     @CrossOrigin
     public List<PayPageDataBO> payPageData(HttpServletRequest request){
         JSONObject json = BodyUtils.bodyJson(request);

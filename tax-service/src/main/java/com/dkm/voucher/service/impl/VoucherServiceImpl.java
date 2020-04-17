@@ -235,10 +235,10 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
 
    @Override
    public List<PayPageDataBO> payPageData(Integer page, Integer pageMuch) {
-//      UserLoginQuery userLogin = localUser.getUser("user");
-//      if (!userLogin.getRoleStatus().equals(ADMIN_NUM)){
-//         throw new ApplicationException(CodeType.SERVICE_ERROR, "您的权限不够");
-//      }
+      UserLoginQuery userLogin = localUser.getUser("user");
+      if (!userLogin.getRoleStatus().equals(ADMIN_NUM)){
+         throw new ApplicationException(CodeType.SERVICE_ERROR, "您的权限不够");
+      }
 
       List<User> users = userMapper.selectList(null);
       Map<Long, User> collect = users.stream().collect(Collectors.toMap(User::getId, user -> user));
