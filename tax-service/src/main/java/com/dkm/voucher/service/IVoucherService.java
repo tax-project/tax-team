@@ -2,6 +2,7 @@ package com.dkm.voucher.service;
 
 import com.dkm.count.entity.bo.CountBO;
 import com.dkm.count.entity.bo.ExcelBO;
+import com.dkm.count.entity.bo.PayPageBO;
 import com.dkm.count.entity.bo.PayPageDataBO;
 import com.dkm.voucher.entity.bo.OptionBo;
 import com.dkm.voucher.entity.vo.VoucherQrCodeVo;
@@ -71,5 +72,5 @@ public interface IVoucherService {
     * @param pageMuch 所需页数
     * @return 分页数据
     */
-    List<PayPageDataBO> payPageData(Integer page, Integer pageMuch);
+   PayPageBO payPageData(Integer page, Integer pageMuch);
 }

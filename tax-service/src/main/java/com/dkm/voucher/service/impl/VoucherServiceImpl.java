@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dkm.constanct.CodeType;
 import com.dkm.count.entity.bo.CountBO;
 import com.dkm.count.entity.bo.ExcelBO;
+import com.dkm.count.entity.bo.PayPageBO;
 import com.dkm.count.entity.bo.PayPageDataBO;
 import com.dkm.exception.ApplicationException;
 import com.dkm.jwt.contain.LocalUser;
@@ -234,7 +235,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
    }
 
    @Override
-   public List<PayPageDataBO> payPageData(Integer page, Integer pageMuch) {
+   public PayPageBO payPageData(Integer page, Integer pageMuch) {
       UserLoginQuery userLogin = localUser.getUser("user");
       if (!userLogin.getRoleStatus().equals(ADMIN_NUM)){
          throw new ApplicationException(CodeType.SERVICE_ERROR, "您的权限不够");
@@ -244,7 +245,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       Map<Long, User> collect = users.stream().collect(Collectors.toMap(User::getId, user -> user));
 
       ArrayList<Voucher> vouchers = baseMapper.payPageData((page-1) * pageMuch, pageMuch);
-      return vouchers.stream().map(voucher -> {
+      List<PayPageDataBO> dataBOS = vouchers.stream().map(voucher -> {
          PayPageDataBO payPageDataBO = new PayPageDataBO();
          payPageDataBO.setUserNickName(collect.get(voucher.getUserId()) == null ? "未知" : collect.get(voucher.getUserId()).getWxNickName());
          payPageDataBO.setTaxNickName(collect.get(voucher.getUpdateUserId()) == null ? "未知" : collect.get(voucher.getUpdateUserId()).getWxNickName());
@@ -253,6 +254,12 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
          payPageDataBO.setImageUrl(voucher.getTicketUrl() == null ? "未知" : voucher.getTicketUrl());
          return payPageDataBO;
       }).collect(Collectors.toList());
+
+      Integer selectCount = baseMapper.selectCount(null);
+      PayPageBO payPageBO = new PayPageBO();
+      payPageBO.setPageMuch(selectCount);
+      payPageBO.setPayPages(dataBOS);
+      return payPageBO;
    }
 
 

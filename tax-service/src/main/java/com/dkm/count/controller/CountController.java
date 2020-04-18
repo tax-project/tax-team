@@ -3,6 +3,7 @@ package com.dkm.count.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.dkm.count.entity.bo.CountBO;
 import com.dkm.count.entity.bo.ExcelBO;
+import com.dkm.count.entity.bo.PayPageBO;
 import com.dkm.count.entity.bo.PayPageDataBO;
 import com.dkm.jwt.islogin.CheckToken;
 import com.dkm.user.utils.BodyUtils;
@@ -75,7 +76,7 @@ public class CountController {
     })
     @CheckToken
     @CrossOrigin
-    public List<PayPageDataBO> payPageData(HttpServletRequest request){
+    public PayPageBO payPageData(HttpServletRequest request){
         JSONObject json = BodyUtils.bodyJson(request);
         Integer page = json.getInteger("page");
         Integer pageMuch = json.getInteger("pageMuch");
