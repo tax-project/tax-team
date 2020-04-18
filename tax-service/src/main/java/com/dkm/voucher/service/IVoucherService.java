@@ -73,4 +73,12 @@ public interface IVoucherService {
     * @return 分页数据
     */
    PayPageBO payPageData(Integer page, Integer pageMuch);
+
+
+   /**
+    * 支付之后修改金额和时间
+    * @param money 支付金额
+    * @return 是否成功
+    */
+   Boolean perfectDeductionAmount(Double money);
 }

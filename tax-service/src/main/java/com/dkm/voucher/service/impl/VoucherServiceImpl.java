@@ -255,11 +255,28 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
          return payPageDataBO;
       }).collect(Collectors.toList());
 
-      Integer selectCount = baseMapper.selectCount(null);
+      QueryWrapper<Voucher> queryWrapper = new QueryWrapper<>();
+      queryWrapper.eq("qr_code_status",1);
+      Integer selectCount = baseMapper.selectCount(queryWrapper);
       PayPageBO payPageBO = new PayPageBO();
       payPageBO.setPageMuch(selectCount);
       payPageBO.setPayPages(dataBOS);
       return payPageBO;
+   }
+
+   @Override
+   public Boolean perfectDeductionAmount(Double money) {
+      QueryWrapper<Voucher> queryWrapper = new QueryWrapper<>();
+      queryWrapper.eq("type_money",money);
+      Voucher voucher = baseMapper.selectOne(queryWrapper);
+      if (voucher!=null){
+         voucher.setPayMoney(money);
+         voucher.setPayTime(LocalDateTime.now());
+         QueryWrapper<Voucher> updateWrapper = new QueryWrapper<>();
+         updateWrapper.eq("id",voucher.getId());
+         int update = baseMapper.update(voucher, updateWrapper);
+      }
+      return true;
    }
 
 

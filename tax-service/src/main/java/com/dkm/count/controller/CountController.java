@@ -66,8 +66,7 @@ public class CountController {
         ExcelUtils.outFile(sheets,path,response);
     }
 
-
-    @ApiOperation(value = "获取分页之后的数据详情",notes = "HTTP头部携带Token",httpMethod = "GET")
+    @ApiOperation(value = "获取分页之后的数据详情",notes = "HTTP头部携带Token",httpMethod = "POST")
     @ApiImplicitParam(name = "token",value = "用户Token，存放在HTTP的头部",required = true,dataType = "String",paramType = "header")
     @PostMapping("/pay/page")
     @ApiImplicitParams({

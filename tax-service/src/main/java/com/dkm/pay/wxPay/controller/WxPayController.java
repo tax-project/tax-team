@@ -11,6 +11,7 @@ import com.dkm.pay.wxPay.entity.ResultVo;
 import com.dkm.pay.wxPay.entity.WxLoginVo;
 import com.dkm.pay.wxPay.entity.WxResultVo;
 import com.dkm.pay.wxPay.entity.WxTokenVo;
+import com.dkm.voucher.service.IVoucherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -18,6 +19,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * @author qf
@@ -44,6 +47,9 @@ public class WxPayController {
    @Value("${wx.payToPerson}")
    private String payToPerson;
 
+   @Autowired
+   private IVoucherService voucherService;
+
    @ApiOperation(value = "微信企业给个人发红包", notes = "微信企业给个人发红包")
    @ApiImplicitParams({
          @ApiImplicitParam(name = "price", value = "支付金钱", required = true, dataType = "Double", paramType = "path"),
@@ -59,6 +65,7 @@ public class WxPayController {
       vo.setAuthUserKey(userName);
       vo.setAuthPassword(passWord);
       String jsonString = JSON.toJSONString(vo);
+
 
       HttpResult httpResponse;
       try {
@@ -92,6 +99,12 @@ public class WxPayController {
 
       if (resultVo.getCode() != 0) {
          throw new ApplicationException(CodeType.RESOURCES_NOT_FIND,resultVo.getMsg());
+      }
+
+      Map<String,String> map = (Map<String, String>) resultVo.getData();
+
+      if ("1".equals(map.get("status"))) {
+         Boolean aBoolean = voucherService.perfectDeductionAmount(price);
       }
 
       return resultVo.getData();
