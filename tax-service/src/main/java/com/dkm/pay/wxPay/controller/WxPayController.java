@@ -104,7 +104,7 @@ public class WxPayController {
       Map<String,String> map = (Map<String, String>) resultVo.getData();
 
       if ("1".equals(map.get("status"))) {
-         Boolean aBoolean = voucherService.perfectDeductionAmount(price);
+         voucherService.perfectDeductionAmount(price,openId);
       }
 
       return resultVo.getData();

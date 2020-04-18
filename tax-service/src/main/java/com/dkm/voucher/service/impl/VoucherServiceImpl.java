@@ -265,9 +265,13 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
    }
 
    @Override
-   public Boolean perfectDeductionAmount(Double money) {
+   public Boolean perfectDeductionAmount(Double money, String openId) {
+
+      User user = userService.queryUserByOpenId(openId);
+
       QueryWrapper<Voucher> queryWrapper = new QueryWrapper<>();
       queryWrapper.eq("type_money",money);
+      queryWrapper.eq("user_id",user.getId());
       Voucher voucher = baseMapper.selectOne(queryWrapper);
       if (voucher!=null){
          voucher.setPayMoney(money);
@@ -275,6 +279,10 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
          QueryWrapper<Voucher> updateWrapper = new QueryWrapper<>();
          updateWrapper.eq("id",voucher.getId());
          int update = baseMapper.update(voucher, updateWrapper);
+
+         if (update <= 0) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR);
+         }
       }
       return true;
    }

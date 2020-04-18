@@ -3,12 +3,6 @@ package com.dkm.voucher.service;
 import com.dkm.count.entity.bo.CountBO;
 import com.dkm.count.entity.bo.ExcelBO;
 import com.dkm.count.entity.bo.PayPageBO;
-import com.dkm.count.entity.bo.PayPageDataBO;
-import com.dkm.voucher.entity.bo.OptionBo;
-import com.dkm.voucher.entity.vo.VoucherQrCodeVo;
-import com.dkm.voucher.entity.vo.VoucherReturnQrCodeVo;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import com.dkm.voucher.entity.bo.IdVo;
 import com.dkm.voucher.entity.bo.IdVo;
 import com.dkm.voucher.entity.bo.OptionBo;
 import com.dkm.voucher.entity.vo.VoucherQrCodeVo;
@@ -80,5 +74,5 @@ public interface IVoucherService {
     * @param money 支付金额
     * @return 是否成功
     */
-   Boolean perfectDeductionAmount(Double money);
+   Boolean perfectDeductionAmount(Double money,String openId);
 }

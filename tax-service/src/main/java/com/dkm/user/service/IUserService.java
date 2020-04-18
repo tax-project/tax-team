@@ -1,9 +1,9 @@
 package com.dkm.user.service;
 
+import com.dkm.user.entity.User;
 import com.dkm.user.entity.bo.UserBO;
 import com.dkm.user.entity.vo.UserVO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,5 +42,12 @@ public interface IUserService {
      * @return 返回设置结果
      */
     Boolean operationPermission(Long id,Integer status);
+
+    /**
+     *   查询用户信息根据openId
+     * @param openId
+     * @return
+     */
+    User queryUserByOpenId (String openId);
 
 }
