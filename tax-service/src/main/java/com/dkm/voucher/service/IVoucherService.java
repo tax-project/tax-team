@@ -74,5 +74,5 @@ public interface IVoucherService {
     * @param money 支付金额
     * @return 是否成功
     */
-   Boolean perfectDeductionAmount(Double money,String openId);
+   void perfectDeductionAmount(Double money,String openId,Long id);
 }

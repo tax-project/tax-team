@@ -53,12 +53,13 @@ public class WxPayController {
    @ApiOperation(value = "微信企业给个人发红包", notes = "微信企业给个人发红包")
    @ApiImplicitParams({
          @ApiImplicitParam(name = "price", value = "支付金钱", required = true, dataType = "Double", paramType = "path"),
-         @ApiImplicitParam(name = "openId", value = "openId", required = true, dataType = "String", paramType = "path")
+         @ApiImplicitParam(name = "openId", value = "openId", required = true, dataType = "String", paramType = "path"),
+         @ApiImplicitParam(name = "id", value = "凭证id", required = true, dataType = "Long", paramType = "path"),
    })
    @GetMapping("/person")
    @CrossOrigin
    @CheckToken
-   public Object orders(@RequestParam("price") Double price, @RequestParam("openId") String openId) {
+   public Object orders(@RequestParam("price") Double price, @RequestParam("openId") String openId,@RequestParam("id") Long id) {
 
 
       WxLoginVo vo = new WxLoginVo();
@@ -104,7 +105,7 @@ public class WxPayController {
       Map<String,String> map = (Map<String, String>) resultVo.getData();
 
       if ("1".equals(map.get("status"))) {
-         voucherService.perfectDeductionAmount(price,openId);
+         voucherService.perfectDeductionAmount(price,openId,id);
       }
 
       return resultVo.getData();

@@ -1,5 +1,7 @@
 package com.dkm.qrCode.controller;
 
+import com.dkm.constanct.CodeType;
+import com.dkm.exception.ApplicationException;
 import com.dkm.jwt.contain.LocalUser;
 import com.dkm.jwt.entity.UserLoginQuery;
 import com.dkm.jwt.islogin.CheckToken;
@@ -97,6 +99,10 @@ public class QrCodeController {
 
       IdVo idVo = voucherService.insertVoucher(vo);
 
+      if (idVo == null) {
+         throw new ApplicationException(CodeType.SERVICE_ERROR, "请勿频繁操作");
+      }
+
       //餐厅的二维码
       String url = restaurantQrCode + "?id=" + idVo.getId() + "&typeName=" +vo.getTypeName() + "&typeMoney=" +vo.getTypeMoney() + "&openId=" +user.getWxOpenId();
       //操作员扫描
@@ -118,6 +124,10 @@ public class QrCodeController {
       vo.setTypeMoney(10.0);
 
       IdVo idVo = voucherService.insertVoucher(vo);
+
+      if (idVo == null) {
+         throw new ApplicationException(CodeType.SERVICE_ERROR, "请勿频繁操作");
+      }
 
       //超市
       String url = supermarketQrCode + "?id=" + idVo.getId() + "&typeName=" +vo.getTypeName() + "&typeMoney=" +vo.getTypeMoney() + "&openId=" +user.getWxOpenId();
@@ -141,6 +151,10 @@ public class QrCodeController {
       vo.setTypeMoney(30.0);
 
       IdVo idVo = voucherService.insertVoucher(vo);
+
+      if (idVo == null) {
+         throw new ApplicationException(CodeType.SERVICE_ERROR, "请勿频繁操作");
+      }
 
       String url = buildingMaterialQrCode + "?id=" + idVo.getId() + "&typeName=" +vo.getTypeName() + "&typeMoney=" +vo.getTypeMoney() + "&openId=" +user.getWxOpenId();
 
@@ -181,10 +195,12 @@ public class QrCodeController {
    @ApiImplicitParam(name = "id", value = "凭证id", required = true, dataType = "Long", paramType = "path")
    @GetMapping("/restaurant")
    @CrossOrigin
+   @CheckToken
    public void restaurant (HttpServletResponse response,@RequestParam("id") Long id) {
 
+      UserLoginQuery user = localUser.getUser("user");
       //餐厅的二维码
-      String url = restaurantQrCode + "?id=" + id + "&typeName=餐厅&typeMoney=20.0";
+      String url = restaurantQrCode + "?id=" + id + "&typeName=餐厅&typeMoney=20.0"+ "&openId=" +user.getWxOpenId();
       //操作员扫描
       qrCode.qrCode(url,response);
    }
@@ -193,10 +209,12 @@ public class QrCodeController {
    @ApiImplicitParam(name = "id", value = "凭证id", required = true, dataType = "Long", paramType = "path")
    @GetMapping("/supermarket")
    @CrossOrigin
+   @CheckToken
    public void supermarket (HttpServletResponse response,@RequestParam("id") Long id) {
 
+      UserLoginQuery user = localUser.getUser("user");
       //超市的二维码
-      String url = supermarketQrCode + "?id=" + id + "&typeName=超市&typeMoney=10.0";
+      String url = supermarketQrCode + "?id=" + id + "&typeName=超市&typeMoney=10.0" + "&openId=" +user.getWxOpenId();
 
       //超市二维码
       qrCode.qrCode(url,response);
@@ -209,8 +227,10 @@ public class QrCodeController {
    @CheckToken
    public void buildingMaterial (HttpServletResponse response,@RequestParam("id") Long id) {
 
+      UserLoginQuery user = localUser.getUser("user");
+
       //建材的二维码
-      String url = buildingMaterialQrCode + "?id=" + id + "&typeName=建材&typeMoney=30.0";
+      String url = buildingMaterialQrCode + "?id=" + id + "&typeName=建材&typeMoney=30.0" + "&openId=" +user.getWxOpenId();
 
       //建材二维码
       qrCode.qrCode(url,response);
