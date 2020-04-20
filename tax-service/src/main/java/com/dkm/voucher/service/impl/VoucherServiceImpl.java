@@ -265,7 +265,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
    }
 
    @Override
-   public void perfectDeductionAmount(Double money, String openId, Long id) {
+   public void perfectDeductionAmount(Double money, Long id) {
 
       Voucher voucher = new Voucher();
       voucher.setId(id);

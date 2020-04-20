@@ -72,7 +72,6 @@ public interface IVoucherService {
    /**
     * 支付之后修改金额和时间
     * @param money 支付金额
-    * @return 是否成功
     */
-   void perfectDeductionAmount(Double money,String openId,Long id);
+   void perfectDeductionAmount(Double money,Long id);
 }
