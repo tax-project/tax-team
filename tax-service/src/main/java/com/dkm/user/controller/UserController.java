@@ -1,12 +1,15 @@
 package com.dkm.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dkm.constanct.CodeType;
+import com.dkm.exception.ApplicationException;
 import com.dkm.jwt.islogin.CheckToken;
 import com.dkm.user.entity.bo.UserBO;
 import com.dkm.user.entity.vo.UserVO;
 import com.dkm.user.service.IUserService;
 import com.dkm.user.token.CreateToken;
 import com.dkm.user.utils.BodyUtils;
+import com.dkm.utils.StringUtils;
 import io.swagger.annotations.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +48,9 @@ public class UserController {
     public Map<String, Object> consumersUser(HttpServletRequest request){
         JSONObject json = BodyUtils.bodyJson(request);
         String code = json.getString("code");
+        if (StringUtils.isBlank(code)) {
+            throw new ApplicationException(CodeType.PARAMETER_ERROR, "参数不能为空");
+        }
         UserBO userBO = userService.bindUserInformation(code, 1);
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(userBO,userVO);
@@ -67,6 +73,9 @@ public class UserController {
     public Map<String, Object> operatorUser(HttpServletRequest request){
         JSONObject json = BodyUtils.bodyJson(request);
         String code = json.getString("code");
+        if (StringUtils.isBlank(code)) {
+            throw new ApplicationException(CodeType.PARAMETER_ERROR, "参数不能为空");
+        }
         UserBO userBO = userService.bindUserInformation(code, 2);
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(userBO,userVO);
@@ -78,12 +87,15 @@ public class UserController {
     }
 
     /**
-     * 操作员登录接口
+     * 管理员用户绑定
      * @param request 请求体
      * @return 返回用户信息实体类
      */
     @ApiOperation(value = "管理员用户绑定",notes = "传入操作员用户微信的code码",code = 200,produces = "application/json")
-    @ApiImplicitParam(name = "code",value = "微信code码",dataType = "String",required = true,paramType = "body")
+    @ApiImplicitParams({
+          @ApiImplicitParam(name = "code",value = "微信code码",dataType = "String",required = true,paramType = "body"),
+          @ApiImplicitParam(name = "iphone",value = "手机号",dataType = "String",required = true,paramType = "body")
+    })
     @ApiResponses(value = {
             @ApiResponse(code = 200,message = "data",response = UserVO.class)
     })
@@ -92,7 +104,13 @@ public class UserController {
     public Map<String, Object> adminUser(HttpServletRequest request){
         JSONObject json = BodyUtils.bodyJson(request);
         String code = json.getString("code");
-        UserBO userBO = userService.bindUserInformation(code, 3);
+        String iphone = json.getString("iphone");
+
+        if (StringUtils.isBlank(iphone) || StringUtils.isBlank(code)) {
+            throw new ApplicationException(CodeType.PARAMETER_ERROR, "参数不能为空");
+        }
+
+        UserBO userBO = userService.bindUserAdminInformation(code, 3,iphone);
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(userBO,userVO);
         String token = createToken.getToken(userBO);

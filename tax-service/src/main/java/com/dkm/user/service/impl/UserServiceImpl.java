@@ -1,8 +1,9 @@
 package com.dkm.user.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.dkm.admin.entity.UserAdmin;
+import com.dkm.admin.service.IUserAdminService;
 import com.dkm.constanct.CodeType;
 import com.dkm.exception.ApplicationException;
 import com.dkm.jwt.contain.LocalUser;
@@ -43,6 +44,9 @@ public class UserServiceImpl implements IUserService {
     private IdGenerator idGenerator;
     @Autowired
     private LocalUser localUser;
+
+    @Autowired
+    private IUserAdminService userAdminService;
     @Override
     public UserBO bindUserInformation(String code, Integer status) {
         try {
@@ -148,11 +152,83 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User queryUserByOpenId(String openId) {
-        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<User>()
-              .eq(User::getWxOpenId,openId);
-        return userMapper.selectOne(wrapper);
+    public UserBO bindUserAdminInformation(String code, Integer status, String iphone) {
+
+        //先判断该手机号是否为管理员手机
+        UserAdmin userAdmin = userAdminService.queryInfo(iphone);
+
+        if (userAdmin == null) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "您没有管理员登录权限");
+        }
+
+        if (userAdmin.getStatus() == 1) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "该账号被冻结，请联系管理员解冻");
+        }
+
+        try {
+            WeChatUtilBO weChatUtilBO = weChatUtil.codeToUserInfo(code);
+            User user = new User();
+            user.setWxOpenId(weChatUtilBO.getDkmWeChatUserOpenId());
+            user.setWxNickName(weChatUtilBO.getDkmWeChatUserNickName());
+            user.setWxHeadImgUrl(weChatUtilBO.getDkmWeChatUserHeadImgUrl());
+            switch (status){
+                case 1:
+                    //消费者
+                    user.setRoleName("消费者");
+                    user.setRoleStatus(1);
+                    break;
+                case 2:
+                    //操作员
+                    user.setRoleName("操作员");
+                    user.setRoleStatus(2);
+                    break;
+                case 3:
+                    //管理员
+                    user.setRoleName("管理员");
+                    user.setRoleStatus(3);
+                    break;
+                default:
+                    //错误操作
+                    break;
+            }
+            //查询该微信openID用户是否存在
+            QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("wx_open_id",user.getWxOpenId());
+            Integer count = userMapper.selectCount(queryWrapper);
+            System.out.println("count:"+count);
+            if (count>0){
+                //用户已经存在，做用户信息更新
+                UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+                updateWrapper.eq("wx_open_id",user.getWxOpenId());
+                int update = userMapper.update(user, updateWrapper);
+                if (update!=1){
+                    throw new ApplicationException(CodeType.SERVICE_ERROR, "用户信息更新失败");
+                }
+                QueryWrapper<User> wrapper = new QueryWrapper<>();
+                wrapper.eq("wx_open_id",user.getWxOpenId());
+                user = userMapper.selectOne(wrapper);
+                System.out.println("更新："+user.toString());
+
+            }else {
+                //用户不存在，做用户信息添加
+                user.setId(idGenerator.getNumberId());
+                user.setStatus(0);
+                user.setUpdateMuch(0);
+                int insert = userMapper.insert(user);
+                if (insert!=1){
+                    throw new ApplicationException(CodeType.SERVICE_ERROR, "用户信息添加失败");
+                }
+                System.out.println("新增："+user.toString());
+            }
+
+            UserBO userBO = new UserBO();
+            BeanUtils.copyProperties(user,userBO);
+            return userBO;
+        } catch (IOException e) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "用户信息绑定失败");
+        }
     }
+
 
     /**
      * 查询操作员的操作权限

@@ -1,6 +1,5 @@
 package com.dkm.user.service;
 
-import com.dkm.user.entity.User;
 import com.dkm.user.entity.bo.UserBO;
 import com.dkm.user.entity.vo.UserVO;
 
@@ -44,10 +43,13 @@ public interface IUserService {
     Boolean operationPermission(Long id,Integer status);
 
     /**
-     *   查询用户信息根据openId
-     * @param openId
+     * 绑定用户资料
+     * 管理员操作
+     * @param code
+     * @param status
+     * @param iphone
      * @return
      */
-    User queryUserByOpenId (String openId);
+    UserBO bindUserAdminInformation(String code, Integer status, String iphone);
 
 }
