@@ -40,7 +40,7 @@ public class UserAdminController {
    @PostMapping("/insert")
    @CrossOrigin
    @CheckToken
-   public ResultVo addUserAdmin (UserAdmin userAdmin) {
+   public ResultVo addUserAdmin (@RequestBody UserAdmin userAdmin) {
       if (userAdmin.getStatus() == null || StringUtils.isBlank(userAdmin.getIphone()) || StringUtils.isBlank(userAdmin.getName())) {
          throw new ApplicationException(CodeType.PARAMETER_ERROR, "参数不能为空");
       }

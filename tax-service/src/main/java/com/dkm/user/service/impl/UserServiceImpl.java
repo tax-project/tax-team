@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
  * @Version: 1.0V
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements IUserService {
 
     private final static Integer ADMIN_NUM = 3;
@@ -91,7 +92,6 @@ public class UserServiceImpl implements IUserService {
                 QueryWrapper<User> wrapper = new QueryWrapper<>();
                 wrapper.eq("wx_open_id",user.getWxOpenId());
                 user = userMapper.selectOne(wrapper);
-                System.out.println("更新："+user.toString());
 
             }else {
                 //用户不存在，做用户信息添加
@@ -102,7 +102,6 @@ public class UserServiceImpl implements IUserService {
                 if (insert!=1){
                     throw new ApplicationException(CodeType.SERVICE_ERROR, "用户信息添加失败");
                 }
-                System.out.println("新增："+user.toString());
             }
 
             UserBO userBO = new UserBO();
@@ -114,7 +113,6 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public List<UserVO> allOperator() {
         UserLoginQuery localUserUser = localUser.getUser("user");
         Integer roleStatus = localUserUser.getRoleStatus();
@@ -135,7 +133,6 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public Boolean operationPermission(Long id,Integer status) {
         UserLoginQuery localUserUser = localUser.getUser("user");
         Integer roleStatus = localUserUser.getRoleStatus();
@@ -207,7 +204,6 @@ public class UserServiceImpl implements IUserService {
                 QueryWrapper<User> wrapper = new QueryWrapper<>();
                 wrapper.eq("wx_open_id",user.getWxOpenId());
                 user = userMapper.selectOne(wrapper);
-                System.out.println("更新："+user.toString());
 
             }else {
                 //用户不存在，做用户信息添加
@@ -218,7 +214,6 @@ public class UserServiceImpl implements IUserService {
                 if (insert!=1){
                     throw new ApplicationException(CodeType.SERVICE_ERROR, "用户信息添加失败");
                 }
-                System.out.println("新增："+user.toString());
             }
 
             UserBO userBO = new UserBO();

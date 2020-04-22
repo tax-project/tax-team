@@ -15,7 +15,7 @@ qrCode:
   buildingMaterial: http://zhdtone.top/#/pages/operator/operator
   buQrUrl: http://118.178.192.44:8304/tax-service/v1/qrCode/buildingMaterial
   #  管理员
-  admin: http://zhdtone.top/#/pages/admin/admin
+  admin: http://zhdtone.top/#/pages/admin/login
   #  操作员
   operator: http://zhdtone.top/#/pages/operator/operator
   #  用户
