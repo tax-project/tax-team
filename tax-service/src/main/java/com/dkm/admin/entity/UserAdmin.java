@@ -27,6 +27,11 @@ public class UserAdmin extends Model<UserAdmin> {
    private String iphone;
 
    /**
+    * 密码
+    */
+   private String password;
+
+   /**
     * 0-正常 1-停用
     */
    private Integer status;

@@ -43,13 +43,14 @@ public interface IUserService {
     Boolean operationPermission(Long id,Integer status);
 
     /**
-     * 绑定用户资料
-     * 管理员操作
+     * * 绑定用户资料
+     *   管理员操作
      * @param code
      * @param status
      * @param iphone
+     * @param password
      * @return
      */
-    UserBO bindUserAdminInformation(String code, Integer status, String iphone);
+    UserBO bindUserAdminInformation(String code, Integer status, String iphone, String password);
 
 }

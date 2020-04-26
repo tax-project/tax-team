@@ -35,13 +35,15 @@ public class UserAdminController {
    @ApiImplicitParams({
          @ApiImplicitParam(name = "status",value = "(0-正常  1-停用)",dataType = "int",required = true,paramType = "body"),
          @ApiImplicitParam(name = "name",value = "管理员名字",dataType = "String",required = true,paramType = "body"),
-         @ApiImplicitParam(name = "iphone",value = "手机号",dataType = "String",required = true,paramType = "body")
+         @ApiImplicitParam(name = "iphone",value = "手机号",dataType = "String",required = true,paramType = "body"),
+         @ApiImplicitParam(name = "password",value = "密码",dataType = "String",required = true,paramType = "body")
    })
    @PostMapping("/insert")
    @CrossOrigin
    @CheckToken
    public ResultVo addUserAdmin (@RequestBody UserAdmin userAdmin) {
-      if (userAdmin.getStatus() == null || StringUtils.isBlank(userAdmin.getIphone()) || StringUtils.isBlank(userAdmin.getName())) {
+      if (userAdmin.getStatus() == null || StringUtils.isBlank(userAdmin.getIphone())
+            || StringUtils.isBlank(userAdmin.getName()) || StringUtils.isBlank(userAdmin.getPassword())) {
          throw new ApplicationException(CodeType.PARAMETER_ERROR, "参数不能为空");
       }
       userAdminService.addUserAdmin(userAdmin);

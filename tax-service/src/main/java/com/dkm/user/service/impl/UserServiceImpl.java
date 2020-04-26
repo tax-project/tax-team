@@ -16,6 +16,7 @@ import com.dkm.user.service.IUserService;
 import com.dkm.user.utils.WeChatUtil;
 import com.dkm.user.utils.bo.WeChatUtilBO;
 import com.dkm.utils.IdGenerator;
+import com.dkm.utils.ShaUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -149,7 +150,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserBO bindUserAdminInformation(String code, Integer status, String iphone) {
+    public UserBO bindUserAdminInformation(String code, Integer status, String iphone, String password) {
 
         //先判断该手机号是否为管理员手机
         UserAdmin userAdmin = userAdminService.queryInfo(iphone);
@@ -160,6 +161,12 @@ public class UserServiceImpl implements IUserService {
 
         if (userAdmin.getStatus() == 1) {
             throw new ApplicationException(CodeType.SERVICE_ERROR, "该账号被冻结，请联系管理员解冻");
+        }
+
+        String s = userAdmin.getPassword();
+        String word = ShaUtils.getSha1(password);
+        if (!word.equals(s)) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "您输入的密码错误");
         }
 
         try {
