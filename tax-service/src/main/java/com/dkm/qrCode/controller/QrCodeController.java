@@ -6,6 +6,7 @@ import com.dkm.jwt.contain.LocalUser;
 import com.dkm.jwt.entity.UserLoginQuery;
 import com.dkm.jwt.islogin.CheckToken;
 import com.dkm.qrCode.QrCode;
+import com.dkm.utils.StringUtils;
 import com.dkm.voucher.entity.bo.IdVo;
 import com.dkm.voucher.entity.vo.VoucherQrCodeVo;
 import com.dkm.voucher.service.IVoucherService;
@@ -76,6 +77,12 @@ public class QrCodeController {
    @Value("${qrCode.user}")
    private String user;
 
+   private final String ZENG_NAME = "曾小厨餐厅";
+
+   private final String YU_NAME = "渔乐圈餐厅";
+
+   private final String CHENG_NAME = "成福记餐厅";
+
    @Autowired
    private IVoucherService voucherService;
 
@@ -83,10 +90,19 @@ public class QrCodeController {
    private LocalUser localUser;
 
    @ApiOperation(value = "餐厅二维码(选择优惠卷)", notes = "餐厅二维码(选择优惠卷)")
+   @ApiImplicitParam(name = "restaurantName", value = "餐厅名称", required = true, dataType = "String", paramType = "path")
    @GetMapping("/restaurantQrCode")
    @CrossOrigin
    @CheckToken
-   public void restaurantQrCode (HttpServletResponse response) {
+   public void restaurantQrCode (HttpServletResponse response, @RequestParam("restaurantName") String restaurantName) {
+
+      if (StringUtils.isBlank(restaurantName)) {
+         throw new ApplicationException(CodeType.PARAMETER_ERROR, "参数不能为空");
+      }
+
+      if (!ZENG_NAME.equals(restaurantName) && !YU_NAME.equals(restaurantName) && !CHENG_NAME.equals(restaurantName)) {
+         throw new ApplicationException(CodeType.PARAMETER_ERROR);
+      }
 
       UserLoginQuery user = localUser.getUser("user");
 
@@ -94,8 +110,8 @@ public class QrCodeController {
       vo.setUserId(user.getId());
       //消费者进行使用
       vo.setQrCodeUrl(reQrUrl);
-      vo.setTypeName("餐厅");
-      vo.setTypeMoney(20.0);
+      vo.setTypeName(restaurantName);
+      vo.setTypeMoney(30.0);
 
       IdVo idVo = voucherService.insertVoucher(vo);
 
@@ -200,7 +216,7 @@ public class QrCodeController {
 
       UserLoginQuery user = localUser.getUser("user");
       //餐厅的二维码
-      String url = restaurantQrCode + "?id=" + id + "&typeName=餐厅&typeMoney=20.0"+ "&openId=" +user.getWxOpenId();
+      String url = restaurantQrCode + "?id=" + id + "&typeName=餐厅&typeMoney=30.0"+ "&openId=" +user.getWxOpenId();
       //操作员扫描
       qrCode.qrCode(url,response);
    }

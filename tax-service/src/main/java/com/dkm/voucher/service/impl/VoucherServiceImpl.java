@@ -28,6 +28,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,22 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
 
    private final static Integer ADMIN_NUM = 3;
 
+   private final String SUPPER_NAME = "超市";
+
+   private final String ZENG_NAME = "曾小厨餐厅";
+
+   private final String YU_NAME = "渔乐圈餐厅";
+
+   private final String CHENG_NAME = "成福记餐厅";
+
+   private final Integer SUPPER = 600;
+
+   private final Integer ZENG_XIAO_CHU = 30;
+
+   private final Integer YU_LE_QUAN = 50;
+
+   private final Integer CHENG_FU_JI = 30;
+
    @Autowired
    private IdGenerator idGenerator;
 
@@ -64,7 +82,69 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
     * @param vo
     */
    @Override
-   public IdVo insertVoucher(VoucherQrCodeVo vo) {
+   public synchronized IdVo insertVoucher(VoucherQrCodeVo vo) {
+
+      LocalDate now = LocalDate.now();
+      String date = DateUtil.formatDate(now);
+      String start = date + " 00:00:00";
+      String end = date + " 23:59:59";
+      LocalDateTime startDate = DateUtil.parseDateTime(start);
+      LocalDateTime endDate = DateUtil.parseDateTime(end);
+      //先判断今天金额是否超标
+      if (SUPPER_NAME.equals(vo.getTypeName())) {
+         //超市
+         LambdaQueryWrapper<Voucher> lambdaQueryWrapper = new LambdaQueryWrapper<Voucher>()
+               .ge(Voucher::getDateTime,startDate)
+               .le(Voucher::getDateTime,endDate)
+               .eq(Voucher::getTypeName,SUPPER_NAME);
+
+         Integer count = baseMapper.selectCount(lambdaQueryWrapper);
+
+         if (count >= SUPPER) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "今日人数已达上限，请明天再来");
+         }
+      }
+
+      if (ZENG_NAME.equals(vo.getTypeName())) {
+         //曾小厨
+
+         LambdaQueryWrapper<Voucher> wrapper = new LambdaQueryWrapper<Voucher>()
+               .ge(Voucher::getDateTime,startDate)
+               .le(Voucher::getDateTime,endDate)
+               .eq(Voucher::getTypeName,ZENG_NAME);
+
+         Integer count = baseMapper.selectCount(wrapper);
+
+         if (count >= ZENG_XIAO_CHU) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "今日人数已达上限，请明天再来");
+         }
+      }
+
+      if (YU_NAME.equals(vo.getTypeName())) {
+         //渔乐圈餐厅
+         LambdaQueryWrapper<Voucher> lambdaQueryWrapper = new LambdaQueryWrapper<Voucher>()
+               .ge(Voucher::getDateTime,startDate)
+               .le(Voucher::getDateTime,endDate)
+               .eq(Voucher::getTypeName,YU_NAME);
+         Integer count = baseMapper.selectCount(lambdaQueryWrapper);
+
+         if (count >= YU_LE_QUAN) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "今日人数已达上限，请明天再来");
+         }
+      }
+
+      if (CHENG_NAME.equals(vo.getTypeName())) {
+         //成福记餐厅
+         LambdaQueryWrapper<Voucher> lambdaQueryWrapper = new LambdaQueryWrapper<Voucher>()
+               .ge(Voucher::getDateTime,startDate)
+               .le(Voucher::getDateTime,endDate)
+               .eq(Voucher::getTypeName,CHENG_NAME);
+         Integer count = baseMapper.selectCount(lambdaQueryWrapper);
+
+         if (count >= CHENG_FU_JI) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "今日人数已达上限，请明天再来");
+         }
+      }
 
       //先查询该用户是否已经有二维码了
       LambdaQueryWrapper<Voucher> wrapper = new LambdaQueryWrapper<Voucher>()
