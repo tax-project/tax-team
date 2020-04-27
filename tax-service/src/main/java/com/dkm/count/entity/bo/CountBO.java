@@ -26,11 +26,15 @@ public class CountBO {
      */
     private Integer supermarketMuch;
     /**
-     * 餐厅人数
+     * 曾小厨人数
      */
     private Integer restaurantMuch;
     /**
-     * 建材人数
+     * 渔乐圈人数
      */
     private Integer buildMuch;
+    /**
+     * 成福记
+     */
+    private Integer intoRestaurant;
 }

@@ -201,9 +201,15 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       }
 
       countBO.setRemainMoney(100000-countBO.getIssuedMoney());
+      //超市人数
       countBO.setSupermarketMuch(baseMapper.supermarketMuch());
+      //曾小厨餐厅
       countBO.setRestaurantMuch(baseMapper.restaurantMuch());
+      //渔乐圈餐厅
       countBO.setBuildMuch(baseMapper.buildMuch());
+      //成福记餐厅
+      countBO.setIntoRestaurant(baseMapper.intoRestaurant());
+
       return countBO;
    }
 
@@ -277,7 +283,6 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
          throw new ApplicationException(CodeType.SERVICE_ERROR);
       }
    }
-
 
    private List<ExcelBO> allGetListExcelBO(){
       QueryWrapper<Voucher> queryWrapper = new QueryWrapper<>();
