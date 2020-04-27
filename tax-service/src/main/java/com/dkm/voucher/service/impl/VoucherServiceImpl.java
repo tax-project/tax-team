@@ -155,6 +155,18 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       IdVo idVo = new IdVo();
 
       if (count < 3) {
+
+         LambdaQueryWrapper<Voucher> lambdaQueryWrapper = new LambdaQueryWrapper<Voucher>()
+               .ge(Voucher::getDateTime,startDate)
+               .le(Voucher::getDateTime,endDate)
+               .eq(Voucher::getUserId,vo.getUserId());
+
+         Voucher selectOne = baseMapper.selectOne(lambdaQueryWrapper);
+
+         if (selectOne != null) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "您今天已领过卷了");
+         }
+
          Voucher voucher = new Voucher();
 
          Long id = idGenerator.getNumberId();

@@ -6,6 +6,7 @@ import com.dkm.jwt.contain.LocalUser;
 import com.dkm.jwt.entity.UserLoginQuery;
 import com.dkm.jwt.islogin.CheckToken;
 import com.dkm.qrCode.QrCode;
+import com.dkm.qrCode.entity.Result;
 import com.dkm.utils.StringUtils;
 import com.dkm.voucher.entity.bo.IdVo;
 import com.dkm.voucher.entity.vo.VoucherQrCodeVo;
@@ -94,7 +95,7 @@ public class QrCodeController {
    @GetMapping("/restaurantQrCode")
    @CrossOrigin
    @CheckToken
-   public void restaurantQrCode (HttpServletResponse response, @RequestParam("restaurantName") String restaurantName) {
+   public Result restaurantQrCode (@RequestParam("restaurantName") String restaurantName) {
 
       if (StringUtils.isBlank(restaurantName)) {
          throw new ApplicationException(CodeType.PARAMETER_ERROR, "参数不能为空");
@@ -116,20 +117,22 @@ public class QrCodeController {
       IdVo idVo = voucherService.insertVoucher(vo);
 
       if (idVo == null) {
-         throw new ApplicationException(CodeType.SERVICE_ERROR, "请勿频繁操作");
+         throw new ApplicationException(CodeType.SERVICE_ERROR, "您已领了三次");
       }
 
       //餐厅的二维码
       String url = restaurantQrCode + "?id=" + idVo.getId() + "&typeName=" +vo.getTypeName() + "&typeMoney=" +vo.getTypeMoney() + "&openId=" +user.getWxOpenId();
       //操作员扫描
-      qrCode.qrCode(url,response);
+      Result result = new Result();
+      result.setUrl(url);
+      return result;
    }
 
    @ApiOperation(value = "超市二维码(选择优惠卷)", notes = "超市二维码(选择优惠卷)")
    @GetMapping("/supermarketQrCode")
    @CrossOrigin
    @CheckToken
-   public void supermarketQrCode (HttpServletResponse response) {
+   public Result supermarketQrCode () {
 
       UserLoginQuery user = localUser.getUser("user");
 
@@ -142,14 +145,16 @@ public class QrCodeController {
       IdVo idVo = voucherService.insertVoucher(vo);
 
       if (idVo == null) {
-         throw new ApplicationException(CodeType.SERVICE_ERROR, "请勿频繁操作");
+         throw new ApplicationException(CodeType.SERVICE_ERROR, "您已领了三次");
       }
 
       //超市
       String url = supermarketQrCode + "?id=" + idVo.getId() + "&typeName=" +vo.getTypeName() + "&typeMoney=" +vo.getTypeMoney() + "&openId=" +user.getWxOpenId();
 
       //超市二维码
-      qrCode.qrCode(url,response);
+      Result result = new Result();
+      result.setUrl(url);
+      return result;
    }
 
    @ApiOperation(value = "建材二维码(选择优惠卷)", notes = "建材二维码(选择优惠卷)")
