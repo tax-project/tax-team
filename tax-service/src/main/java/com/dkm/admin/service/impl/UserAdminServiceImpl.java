@@ -10,6 +10,7 @@ import com.dkm.admin.service.IUserAdminService;
 import com.dkm.constanct.CodeType;
 import com.dkm.exception.ApplicationException;
 import com.dkm.utils.IdGenerator;
+import com.dkm.utils.ShaUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,9 @@ public class UserAdminServiceImpl extends ServiceImpl<UserAdminMapper, UserAdmin
          throw new ApplicationException(CodeType.SERVICE_ERROR, "该手机号已经添加过了");
       }
 
+      String password = userAdmin.getPassword();
       userAdmin.setId(idGenerator.getNumberId());
+      userAdmin.setPassword(ShaUtils.getSha1(password));
       int insert = baseMapper.insert(userAdmin);
 
       if (insert <= 0) {

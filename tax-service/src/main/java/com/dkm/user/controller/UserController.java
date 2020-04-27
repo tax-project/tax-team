@@ -94,7 +94,8 @@ public class UserController {
     @ApiOperation(value = "管理员用户绑定",notes = "传入操作员用户微信的code码",code = 200,produces = "application/json")
     @ApiImplicitParams({
           @ApiImplicitParam(name = "code",value = "微信code码",dataType = "String",required = true,paramType = "body"),
-          @ApiImplicitParam(name = "iphone",value = "手机号",dataType = "String",required = true,paramType = "body")
+          @ApiImplicitParam(name = "iphone",value = "手机号",dataType = "String",required = true,paramType = "body"),
+          @ApiImplicitParam(name = "password",value = "密码",dataType = "String",required = true,paramType = "body")
     })
     @ApiResponses(value = {
             @ApiResponse(code = 200,message = "data",response = UserVO.class)
@@ -105,12 +106,13 @@ public class UserController {
         JSONObject json = BodyUtils.bodyJson(request);
         String code = json.getString("code");
         String iphone = json.getString("iphone");
+        String password = json.getString("password");
 
-        if (StringUtils.isBlank(iphone) || StringUtils.isBlank(code)) {
+        if (StringUtils.isBlank(iphone) || StringUtils.isBlank(code) || StringUtils.isBlank(password)) {
             throw new ApplicationException(CodeType.PARAMETER_ERROR, "参数不能为空");
         }
 
-        UserBO userBO = userService.bindUserAdminInformation(code, 3,iphone);
+        UserBO userBO = userService.bindUserAdminInformation(code, 3,iphone, password);
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(userBO,userVO);
         String token = createToken.getToken(userBO);
