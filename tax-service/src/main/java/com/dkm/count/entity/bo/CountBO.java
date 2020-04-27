@@ -28,13 +28,13 @@ public class CountBO {
     /**
      * 曾小厨人数
      */
-    private Integer restaurantMuch;
+    private Integer zenRestaurant;
     /**
      * 渔乐圈人数
      */
-    private Integer buildMuch;
+    private Integer yvRestaurant;
     /**
      * 成福记
      */
-    private Integer intoRestaurant;
+    private Integer chenRestaurant;
 }

@@ -296,11 +296,11 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       //超市人数
       countBO.setSupermarketMuch(baseMapper.supermarketMuch());
       //曾小厨餐厅
-      countBO.setRestaurantMuch(baseMapper.restaurantMuch());
+      countBO.setZenRestaurant(baseMapper.restaurantMuch());
       //渔乐圈餐厅
-      countBO.setBuildMuch(baseMapper.buildMuch());
+      countBO.setYvRestaurant(baseMapper.buildMuch());
       //成福记餐厅
-      countBO.setIntoRestaurant(baseMapper.intoRestaurant());
+      countBO.setChenRestaurant(baseMapper.intoRestaurant());
 
       return countBO;
    }
