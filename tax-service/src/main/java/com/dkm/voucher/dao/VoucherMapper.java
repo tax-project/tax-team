@@ -30,20 +30,27 @@ public interface VoucherMapper extends IBaseMapper<Voucher> {
      * 获取超市参与人数
      * @return 人数
      */
-    @Select("select count(distinct user_id) from tb_voucher where type_money = 10")
+    @Select("select count(distinct user_id) from tb_voucher where type_name = '超市'")
     Integer supermarketMuch();
     /**
-     * 获取餐厅参与人数
+     * 曾小厨餐厅
      * @return 人数
      */
-    @Select("select count(distinct user_id) from tb_voucher where type_money = 20")
+    @Select("select count(distinct user_id) from tb_voucher where type_name = '曾小厨餐厅'")
     Integer restaurantMuch();
     /**
-     * 获取建材参与人数
+     * 渔乐圈餐厅
      * @return 人数
      */
-    @Select("select count(distinct user_id) from tb_voucher where type_money = 30")
+    @Select("select count(distinct user_id) from tb_voucher where type_name = '渔乐圈餐厅'")
     Integer buildMuch();
+
+    /**
+     * 成福记餐厅
+     * @return 人数
+     */
+    @Select("select count(distinct user_id) from tb_voucher where type_name = '成福记餐厅'")
+    Integer intoRestaurant();
 
     /**
      * 获取分页之后的支付数据

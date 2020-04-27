@@ -1,32 +1,32 @@
 spring:
   datasource:
-    url: jdbc:mysql://47.92.133.46:3306/tax_bureau?useUnicode=true&useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://118.178.192.44:3306/tax_bureau?useUnicode=true&useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
-    password: 123
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 qrCode:
   #  餐厅
   restaurant: http://zhdtone.top/#/pages/operator/operator
-  reQrUrl: http://47.92.133.46:8304/tax-service/v1/qrCode/restaurant
+  reQrUrl: http://118.178.192.44:8304/tax-service/v1/qrCode/restaurant
   #  超市
   supermarket: http://zhdtone.top/#/pages/operator/operator
-  suQrUrl: http://47.92.133.46:8304/tax-service/v1/qrCode/supermarket
+  suQrUrl: http://118.178.192.44:8304/tax-service/v1/qrCode/supermarket
   #  建材
   buildingMaterial: http://zhdtone.top/#/pages/operator/operator
-  buQrUrl: http://47.92.133.46:8304/tax-service/v1/qrCode/buildingMaterial
+  buQrUrl: http://118.178.192.44:8304/tax-service/v1/qrCode/buildingMaterial
   #  管理员
-  admin: http://zhdtone.top/#/pages/admin/admin
+  admin: http://zhdtone.top/#/pages/admin/login
   #  操作员
   operator: http://zhdtone.top/#/pages/operator/operator
   #  用户
   user: http://zhdtone.top
 # 图片上传到本工程服务器
 file:
-  url: http://47.92.133.46:8304/tax-service/img
+  url: http://118.178.192.44:8304/tax-service/img
 # 调微信支付接口的账号密码
 wx:
   userName: 20200413104508699208547560493056
   passWord: f09689454e36460cbc643eaa256f2c14
   # 相关微信接口
-  authLogin: http://47.92.133.46:8303/dkm_pay_resource/v1/auth/authLogin
-  payToPerson: http://47.92.133.46:8303/dkm_pay_resource/v1/wxPay/toPerson
+  authLogin: http://118.178.192.44:8303/dkm_pay_resource/v1/auth/authLogin
+  payToPerson: http://118.178.192.44:8303/dkm_pay_resource/v1/wxPay/toPerson

@@ -72,12 +72,21 @@ public class ProblemController {
 
 
 
-   @ApiOperation(value = "随机返回5条数据", notes = "随机返回5条数据")
+   @ApiOperation(value = "随机返回10条数据", notes = "随机返回10条数据")
    @GetMapping("/listProblem")
    @CrossOrigin
-//   @CheckToken
+   @CheckToken
    public List<Problem> listProblem () {
       return problemService.listProblem ();
+   }
+
+
+   @ApiOperation(value = "从10道题中随机返回5条数据", notes = "从10道题中随机返回5条数据")
+   @GetMapping("/listAnswerProblem")
+   @CrossOrigin
+   @CheckToken
+   public List<Problem> listAnswerProblem () {
+      return problemService.listAnswerProblem ();
    }
 
    @ApiOperation(value = "返回全部的题目", notes = "学习页面接口")

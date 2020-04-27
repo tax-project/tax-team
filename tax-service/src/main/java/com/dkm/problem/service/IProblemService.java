@@ -26,10 +26,16 @@ public interface IProblemService {
    void deleteProblem (Long id);
 
    /**
-    * 随机返回5条数据
+    * 随机返回10条数据
     * @return
     */
    List<Problem> listProblem ();
+
+   /**
+    * 从10条数据中返回5条数据答题
+    * @return
+    */
+   List<Problem> listAnswerProblem ();
 
    /**
     * 返回全部的题目
