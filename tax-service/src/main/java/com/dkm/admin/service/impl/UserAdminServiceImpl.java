@@ -40,14 +40,27 @@ public class UserAdminServiceImpl extends ServiceImpl<UserAdminMapper, UserAdmin
          throw new ApplicationException(CodeType.SERVICE_ERROR, "该手机号已经添加过了");
       }
 
-      String password = userAdmin.getPassword();
-      userAdmin.setId(idGenerator.getNumberId());
-      userAdmin.setPassword(ShaUtils.getSha1(password));
-      int insert = baseMapper.insert(userAdmin);
+      if (userAdmin.getId() == null) {
+         String password = userAdmin.getPassword();
+         userAdmin.setId(idGenerator.getNumberId());
+         userAdmin.setPassword(ShaUtils.getSha1(password));
+         int insert = baseMapper.insert(userAdmin);
 
-      if (insert <= 0) {
-         throw new ApplicationException(CodeType.SERVICE_ERROR, "添加失败");
+         if (insert <= 0) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "添加失败");
+         }
+         return;
       }
+
+      String password = userAdmin.getPassword();
+      userAdmin.setId(userAdmin.getId());
+      userAdmin.setPassword(ShaUtils.getSha1(password));
+      int update = baseMapper.updateById(userAdmin);
+
+      if (update <= 0) {
+         throw new ApplicationException(CodeType.SERVICE_ERROR, "修改密码失败");
+      }
+
    }
 
    @Override

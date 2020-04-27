@@ -33,6 +33,7 @@ public class UserAdminController {
 
    @ApiOperation(value = "增加管理员手机号",notes = "增加管理员手机号",code = 200,produces = "application/json")
    @ApiImplicitParams({
+         @ApiImplicitParam(name = "id",value = "id",dataType = "Long",required = false,paramType = "body"),
          @ApiImplicitParam(name = "status",value = "(0-正常  1-停用)",dataType = "int",required = true,paramType = "body"),
          @ApiImplicitParam(name = "name",value = "管理员名字",dataType = "String",required = true,paramType = "body"),
          @ApiImplicitParam(name = "iphone",value = "手机号",dataType = "String",required = true,paramType = "body"),
