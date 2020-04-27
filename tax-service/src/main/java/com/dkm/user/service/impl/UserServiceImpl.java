@@ -155,6 +155,18 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
+     * 管理员用户
+     * @param code
+     * @param verificationCode
+     * @return
+     */
+    @Override
+    public UserBO bindUserAdminInfo(String code, String verificationCode) {
+
+        return null;
+    }
+
+    /**
      * 查询操作员的操作权限
      * @param id
      * @return

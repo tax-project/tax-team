@@ -50,4 +50,13 @@ public interface IUserService {
      */
     User queryUserByOpenId (String openId);
 
+
+    /**
+     * 管理员用户注册
+     * @param code
+     * @param verificationCode
+     * @return 返回管理员的信息
+     */
+    UserBO bindUserAdminInfo(String code, String verificationCode);
+
 }

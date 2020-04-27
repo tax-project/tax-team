@@ -200,7 +200,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
          countBO.setIssuedMoney(0D);
       }
 
-      countBO.setRemainMoney(100000-countBO.getIssuedMoney());
+      countBO.setRemainMoney(65100-countBO.getIssuedMoney());
       countBO.setSupermarketMuch(baseMapper.supermarketMuch());
       countBO.setRestaurantMuch(baseMapper.restaurantMuch());
       countBO.setBuildMuch(baseMapper.buildMuch());
