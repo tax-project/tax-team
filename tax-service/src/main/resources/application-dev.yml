@@ -7,13 +7,13 @@ spring:
 qrCode:
   #  餐厅
   restaurant: http://zhdtone.top/#/pages/operator/operator
-  reQrUrl: http://118.178.192.44:8304/tax-service/v1/qrCode/restaurant
+  reQrUrl: http://120.25.196.49:8304/tax-service/v1/qrCode/restaurant
   #  超市
   supermarket: http://zhdtone.top/#/pages/operator/operator
-  suQrUrl: http://118.178.192.44:8304/tax-service/v1/qrCode/supermarket
+  suQrUrl: http://120.25.196.49:8304/tax-service/v1/qrCode/supermarket
   #  建材
   buildingMaterial: http://zhdtone.top/#/pages/operator/operator
-  buQrUrl: http://118.178.192.44:8304/tax-service/v1/qrCode/buildingMaterial
+  buQrUrl: http://120.25.196.49:8304/tax-service/v1/qrCode/buildingMaterial
   #  管理员
   admin: http://zhdtone.top/#/pages/admin/login
   #  操作员
@@ -22,11 +22,11 @@ qrCode:
   user: http://zhdtone.top
 # 图片上传到本工程服务器
 file:
-  url: http://118.178.192.44:8304/tax-service/img
+  url: http://120.25.196.49:8304/tax-service/img
 # 调微信支付接口的账号密码
 wx:
   userName: 20200413104508699208547560493056
   passWord: f09689454e36460cbc643eaa256f2c14
   # 相关微信接口
-  authLogin: http://118.178.192.44:8303/dkm_pay_resource/v1/auth/authLogin
-  payToPerson: http://118.178.192.44:8303/dkm_pay_resource/v1/wxPay/toPerson
+  authLogin: http://120.25.196.49:8303/dkm_pay_resource/v1/auth/authLogin
+  payToPerson: http://120.25.196.49:8303/dkm_pay_resource/v1/wxPay/toPerson

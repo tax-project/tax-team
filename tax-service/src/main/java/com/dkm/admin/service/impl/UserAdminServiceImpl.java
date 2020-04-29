@@ -32,15 +32,16 @@ public class UserAdminServiceImpl extends ServiceImpl<UserAdminMapper, UserAdmin
    @Override
    public synchronized void addUserAdmin(UserAdmin userAdmin) {
 
-      LambdaQueryWrapper<UserAdmin> wrapper = new LambdaQueryWrapper<UserAdmin>()
-            .eq(UserAdmin::getIphone,userAdmin.getIphone());
-      UserAdmin userAdmin1 = baseMapper.selectOne(wrapper);
-
-      if (userAdmin1 != null) {
-         throw new ApplicationException(CodeType.SERVICE_ERROR, "该手机号已经添加过了");
-      }
-
       if (userAdmin.getId() == null) {
+
+         LambdaQueryWrapper<UserAdmin> wrapper = new LambdaQueryWrapper<UserAdmin>()
+               .eq(UserAdmin::getIphone,userAdmin.getIphone());
+         UserAdmin userAdmin1 = baseMapper.selectOne(wrapper);
+
+         if (userAdmin1 != null) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "该手机号已经添加过了");
+         }
+
          String password = userAdmin.getPassword();
          userAdmin.setId(idGenerator.getNumberId());
          userAdmin.setPassword(ShaUtils.getSha1(password));
