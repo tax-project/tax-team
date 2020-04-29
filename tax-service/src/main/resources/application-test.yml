@@ -30,7 +30,4 @@ wx:
 # 相关微信接口
   authLogin: http://39.108.118.48:8080/dkm_pay_resource/v1/auth/authLogin
   payToPerson: http://39.108.118.48:8080/dkm_pay_resource/v1/wxPay/toPerson
-# //appId:wx69abe63fb3af0007
-# //mchId:1531162741
-# //key:0d53a67db5ed991d697999001657e621
 
