@@ -3,6 +3,7 @@ package com.dkm.user.service;
 import com.dkm.user.entity.bo.UserBO;
 import com.dkm.user.entity.vo.UserVO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -52,4 +53,11 @@ public interface IUserService {
      * @return
      */
     UserBO bindUserAdminInformation(String code, Integer status, String iphone, String password);
+
+    /**
+     * 修 改时间和次数
+     * @param date
+     * @param userId
+     */
+    void updateTime (LocalDateTime date, Long userId);
 }

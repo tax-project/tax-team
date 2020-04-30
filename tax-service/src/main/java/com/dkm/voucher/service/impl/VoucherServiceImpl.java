@@ -184,6 +184,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
             throw new ApplicationException(CodeType.SERVICE_ERROR, "添加二维码信息失败");
          }
 
+         userService.updateTime(LocalDateTime.now(),vo.getUserId());
+
          idVo.setId(id);
          return idVo;
       }
@@ -386,13 +388,25 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
          ExcelBO excelBO = new ExcelBO();
          excelBO.setId(voucher.getId());
          excelBO.setUserId(voucher.getUserId());
-         excelBO.setUserNickName(collect.get(voucher.getUserId()).getWxNickName());
+         if (voucher.getUserId() == null) {
+            excelBO.setUserNickName("未知");
+         } else if (collect.get(voucher.getUserId()) == null) {
+            excelBO.setUserNickName("未知");
+         } else {
+            excelBO.setUserNickName(collect.get(voucher.getUserId()).getWxNickName());
+         }
          excelBO.setTypeName(voucher.getTypeName());
          excelBO.setTicketUrl(voucher.getTicketUrl());
          excelBO.setPayMoney(voucher.getPayMoney()==null?0D:voucher.getPayMoney());
          excelBO.setPayTime(voucher.getPayTime()==null?"未支付":DateUtil.formatDateTime(voucher.getPayTime()));
          excelBO.setTaxUserId(voucher.getUpdateUserId());
-         excelBO.setTaxNickName(collect.get(voucher.getUpdateUserId()).getWxNickName());
+         if (voucher.getUpdateUserId() == null) {
+            excelBO.setTaxNickName("未知");
+         } else if (collect.get(voucher.getUpdateUserId()) == null) {
+            excelBO.setTaxNickName("未知");
+         } else {
+            excelBO.setTaxNickName(collect.get(voucher.getUpdateUserId()).getWxNickName());
+         }
          excelBO.setTaxUserName(voucher.getUpdateUser());
          return excelBO;
       }).collect(Collectors.toList());

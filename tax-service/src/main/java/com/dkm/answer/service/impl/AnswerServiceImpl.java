@@ -3,13 +3,11 @@ package com.dkm.answer.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.dkm.answer.dao.AnswerMapper;
 import com.dkm.answer.entity.Answer;
 import com.dkm.answer.service.IAnswerService;
 import com.dkm.constanct.CodeType;
 import com.dkm.exception.ApplicationException;
-import com.dkm.jwt.entity.UserLoginQuery;
 import com.dkm.user.dao.UserMapper;
 import com.dkm.user.entity.User;
 import com.dkm.utils.DateUtil;
@@ -17,8 +15,8 @@ import com.dkm.utils.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -79,21 +77,10 @@ public class AnswerServiceImpl implements IAnswerService {
                 }
             }
 
-            User user1 = new User();
-            user1.setUpdateTime(LocalDateTime.now());
-            UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("id",userId);
-            int update = userMapper.update(user1, updateWrapper);
-
-
             if (updateMuch>=3){
                 throw new ApplicationException(CodeType.SERVICE_ERROR, "您的领取次数已达上限，谢谢参与");
             }
-            //领卷次数加一
-            Integer integer = userMapper.increaseOne(userId);
-            if (integer!=1){
-                throw new ApplicationException(CodeType.SERVICE_ERROR, "操作异常，请重试");
-            }
+
         }
         return true;
     }

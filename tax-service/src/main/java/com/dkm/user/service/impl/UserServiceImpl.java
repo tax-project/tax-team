@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -228,6 +229,28 @@ public class UserServiceImpl implements IUserService {
             return userBO;
         } catch (IOException e) {
             throw new ApplicationException(CodeType.SERVICE_ERROR, "用户信息绑定失败");
+        }
+    }
+
+    /**
+     * 修改时间和次数
+     * @param date
+     */
+    @Override
+    public void updateTime(LocalDateTime date, Long userId) {
+        User user = new User();
+        user.setId(userId);
+        user.setUpdateTime(LocalDateTime.now());
+        int i = userMapper.updateById(user);
+
+        if (i <= 0) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR,"修改失败");
+        }
+
+        //领卷次数加一
+        Integer integer = userMapper.increaseOne(userId);
+        if (integer!=1){
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "操作异常，请重试");
         }
     }
 
