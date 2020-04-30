@@ -380,7 +380,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
 
    private List<ExcelBO> allGetListExcelBO(){
       QueryWrapper<Voucher> queryWrapper = new QueryWrapper<>();
-      queryWrapper.eq("qr_code_status","1");
+      queryWrapper.eq("qr_code_status","1").orderByDesc("update_time");
       List<Voucher> vouchers = baseMapper.selectList(queryWrapper);
       List<User> users = userMapper.selectList(null);
       Map<Long, User> collect = users.stream().collect(Collectors.toMap(User::getId, user -> user));
