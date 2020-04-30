@@ -58,6 +58,6 @@ public interface VoucherMapper extends IBaseMapper<Voucher> {
      * @param pageMuch 拿到多少页
      * @return 数据
      */
-    @Select("select * from tb_voucher where qr_code_status = 1 limit #{startPage},#{pageMuch}")
+    @Select("select * from tb_voucher where qr_code_status = 1 order by date_time desc limit #{startPage},#{pageMuch}")
     ArrayList<Voucher> payPageData(@Param("startPage") Integer startPage, @Param("pageMuch") Integer pageMuch);
 }
