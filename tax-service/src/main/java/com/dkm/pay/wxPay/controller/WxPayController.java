@@ -59,7 +59,9 @@ public class WxPayController {
    @GetMapping("/person")
    @CrossOrigin
    @CheckToken
-   public Object orders(@RequestParam("price") Double price, @RequestParam("openId") String openId,@RequestParam("id") Long id) {
+   public Object orders(@RequestParam("price") Double price,
+                        @RequestParam("openId") String openId,
+                        @RequestParam("id") Long id) {
 
 
       WxLoginVo vo = new WxLoginVo();

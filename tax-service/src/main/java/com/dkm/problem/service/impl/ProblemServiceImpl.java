@@ -167,6 +167,10 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
             if (set1.size() == count) {
                return set1;
             }
+
+            if (set1.size() > count) {
+               throw new ApplicationException(CodeType.SERVICE_ERROR, "获取题目失败");
+            }
          }
       }
       return set;
