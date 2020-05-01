@@ -94,8 +94,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       if (SUPPER_NAME.equals(vo.getTypeName())) {
          //超市
          LambdaQueryWrapper<Voucher> lambdaQueryWrapper = new LambdaQueryWrapper<Voucher>()
-               .ge(Voucher::getDateTime,startDate)
-               .le(Voucher::getDateTime,endDate)
+               .ge(Voucher::getPayTime,startDate)
+               .le(Voucher::getPayTime,endDate)
                .eq(Voucher::getTypeName,SUPPER_NAME);
 
          Integer count = baseMapper.selectCount(lambdaQueryWrapper);
@@ -107,10 +107,9 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
 
       if (ZENG_NAME.equals(vo.getTypeName())) {
          //曾小厨
-
          LambdaQueryWrapper<Voucher> wrapper = new LambdaQueryWrapper<Voucher>()
-               .ge(Voucher::getDateTime,startDate)
-               .le(Voucher::getDateTime,endDate)
+               .ge(Voucher::getPayTime,startDate)
+               .le(Voucher::getPayTime,endDate)
                .eq(Voucher::getTypeName,ZENG_NAME);
 
          Integer count = baseMapper.selectCount(wrapper);
@@ -123,8 +122,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       if (YU_NAME.equals(vo.getTypeName())) {
          //渔乐圈餐厅
          LambdaQueryWrapper<Voucher> lambdaQueryWrapper = new LambdaQueryWrapper<Voucher>()
-               .ge(Voucher::getDateTime,startDate)
-               .le(Voucher::getDateTime,endDate)
+               .ge(Voucher::getPayTime,startDate)
+               .le(Voucher::getPayTime,endDate)
                .eq(Voucher::getTypeName,YU_NAME);
          Integer count = baseMapper.selectCount(lambdaQueryWrapper);
 
@@ -136,8 +135,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       if (CHENG_NAME.equals(vo.getTypeName())) {
          //成福记餐厅
          LambdaQueryWrapper<Voucher> lambdaQueryWrapper = new LambdaQueryWrapper<Voucher>()
-               .ge(Voucher::getDateTime,startDate)
-               .le(Voucher::getDateTime,endDate)
+               .ge(Voucher::getPayTime,startDate)
+               .le(Voucher::getPayTime,endDate)
                .eq(Voucher::getTypeName,CHENG_NAME);
          Integer count = baseMapper.selectCount(lambdaQueryWrapper);
 
