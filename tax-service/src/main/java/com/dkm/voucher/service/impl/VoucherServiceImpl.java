@@ -246,6 +246,68 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
          throw new ApplicationException(CodeType.SERVICE_ERROR, "该二维码已失效");
       }
 
+      LocalDate now = LocalDate.now();
+      String date = DateUtil.formatDate(now);
+      String start = date + " 00:00:00";
+      String end = date + " 23:59:59";
+      LocalDateTime startDate = DateUtil.parseDateTime(start);
+      LocalDateTime endDate = DateUtil.parseDateTime(end);
+      //先判断今天金额是否超标
+      if (SUPPER_NAME.equals(byId.getTypeName())) {
+         //超市
+         LambdaQueryWrapper<Voucher> lambdaQueryWrapper = new LambdaQueryWrapper<Voucher>()
+                 .ge(Voucher::getPayTime,startDate)
+                 .le(Voucher::getPayTime,endDate)
+                 .eq(Voucher::getTypeName,SUPPER_NAME);
+
+         Integer count = baseMapper.selectCount(lambdaQueryWrapper);
+
+         if (count >= SUPPER) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "今日人数已达上限，请明天再来");
+         }
+      }
+
+      if (ZENG_NAME.equals(byId.getTypeName())) {
+         //曾小厨
+         LambdaQueryWrapper<Voucher> wrapper = new LambdaQueryWrapper<Voucher>()
+                 .ge(Voucher::getPayTime,startDate)
+                 .le(Voucher::getPayTime,endDate)
+                 .eq(Voucher::getTypeName,ZENG_NAME);
+
+         Integer count = baseMapper.selectCount(wrapper);
+
+         if (count >= ZENG_XIAO_CHU) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "今日人数已达上限，请明天再来");
+         }
+      }
+
+      if (YU_NAME.equals(byId.getTypeName())) {
+         //渔乐圈餐厅
+         LambdaQueryWrapper<Voucher> lambdaQueryWrapper = new LambdaQueryWrapper<Voucher>()
+                 .ge(Voucher::getPayTime,startDate)
+                 .le(Voucher::getPayTime,endDate)
+                 .eq(Voucher::getTypeName,YU_NAME);
+         Integer count = baseMapper.selectCount(lambdaQueryWrapper);
+
+         if (count >= YU_LE_QUAN) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "今日人数已达上限，请明天再来");
+         }
+      }
+
+      if (CHENG_NAME.equals(byId.getTypeName())) {
+         //成福记餐厅
+         LambdaQueryWrapper<Voucher> lambdaQueryWrapper = new LambdaQueryWrapper<Voucher>()
+                 .ge(Voucher::getPayTime,startDate)
+                 .le(Voucher::getPayTime,endDate)
+                 .eq(Voucher::getTypeName,CHENG_NAME);
+         Integer count = baseMapper.selectCount(lambdaQueryWrapper);
+
+         if (count >= CHENG_FU_JI) {
+            throw new ApplicationException(CodeType.SERVICE_ERROR, "今日人数已达上限，请明天再来");
+         }
+      }
+
+
       //有权限操作
       Voucher voucher = new Voucher();
       voucher.setId(bo.getId());

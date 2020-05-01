@@ -20,7 +20,7 @@ import java.util.Map;
 public interface VoucherMapper extends IBaseMapper<Voucher> {
 
     /**
-     * 获取总金额
+     * 获取总金额,参与用户总数
      * @return 金额
      */
     @Select("select sum(pay_money)issued_money, count(distinct user_id)issued_user_much from tb_voucher")
