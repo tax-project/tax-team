@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.dkm.count.entity.bo.CountBO;
 import com.dkm.count.entity.bo.ExcelBO;
 import com.dkm.count.entity.bo.PayPageBO;
-import com.dkm.count.entity.bo.PayPageDataBO;
+import com.dkm.entity.exl.tax.ExlTaxUtils;
+import com.dkm.entity.exl.tax.TaxOutInfoExl;
 import com.dkm.jwt.islogin.CheckToken;
 import com.dkm.user.utils.BodyUtils;
+import com.dkm.utils.DateUtil;
 import com.dkm.utils.ExcelUtils;
 import com.dkm.utils.FilesUtils;
 import com.dkm.voucher.service.IVoucherService;
@@ -15,11 +17,14 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -80,5 +85,61 @@ public class CountController {
         Integer page = json.getInteger("page");
         Integer pageMuch = json.getInteger("pageMuch");
         return voucherService.payPageData(page,pageMuch);
+    }
+
+
+    @CrossOrigin
+    @GetMapping("/exl")
+    public void orderExcel(HttpServletResponse response) {
+
+        //查询出需要导出的数据
+        List<TaxOutInfoExl> list = voucherService.listAll();
+
+        Integer zCount = 0;
+        Integer cCount = 0;
+        Integer yCount = 0;
+        Integer sCount = 0;
+
+        //创建报表体
+        List<List<String>> body = new ArrayList<>();
+        for (TaxOutInfoExl query : list) {
+
+            sCount += query.getSupper();
+            zCount += query.getZRestaurant();
+            cCount += query.getCRestaurant();
+            yCount += query.getYRestaurant();
+
+            List<String> bodyValue = new ArrayList<>();
+            bodyValue.add(query.getDate());
+            bodyValue.add(String.valueOf(query.getSupper()));
+            bodyValue.add(String.valueOf(query.getCRestaurant()));
+            bodyValue.add(String.valueOf(query.getZRestaurant()));
+            bodyValue.add(String.valueOf(query.getYRestaurant()));
+            //将数据添加到报表体中
+            body.add(bodyValue);
+        }
+        ExlTaxUtils contentExl = new ExlTaxUtils();
+        LocalDateTime now = LocalDateTime.now();
+        String date = DateUtil.formatDateTime(now);
+        contentExl.setEndTime(date);
+
+        Integer supperMoney = sCount * 10;
+        Integer zMoney = zCount * 30;
+        Integer cMoney = cCount * 30;
+        Integer yMoney = yCount * 30;
+        Integer allPrice = supperMoney + zMoney + cMoney + yMoney;
+
+        contentExl.setSupperMoney(supperMoney);
+        contentExl.setCRestaurantMoney(cMoney);
+        contentExl.setYRestaurantMoney(yMoney);
+        contentExl.setZRestaurantMoney(zMoney);
+        contentExl.setAllMoney(allPrice);
+
+
+        String fileName = "税务局优惠卷活动数据统计.xls";
+        Workbook excel = ExcelUtils.exp2Excel(body,contentExl);
+        String fileStorePath = "exl";
+        String path = FilesUtils.getPath(fileName,fileStorePath);
+        ExcelUtils.outFile2(excel,path,response);
     }
 }

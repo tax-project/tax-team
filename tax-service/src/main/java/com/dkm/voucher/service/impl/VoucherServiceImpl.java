@@ -8,6 +8,7 @@ import com.dkm.count.entity.bo.CountBO;
 import com.dkm.count.entity.bo.ExcelBO;
 import com.dkm.count.entity.bo.PayPageBO;
 import com.dkm.count.entity.bo.PayPageDataBO;
+import com.dkm.entity.exl.tax.TaxOutInfoExl;
 import com.dkm.exception.ApplicationException;
 import com.dkm.jwt.contain.LocalUser;
 import com.dkm.jwt.entity.UserLoginQuery;
@@ -437,6 +438,76 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
       if (update <= 0) {
          throw new ApplicationException(CodeType.SERVICE_ERROR);
       }
+   }
+
+   @Override
+   public List<TaxOutInfoExl> listAll() {
+      LocalDate now = LocalDate.now();
+
+      String endDate = "2020-04-29";
+      List<String> dateList = new ArrayList<>();
+      dateList.add(DateUtil.formatDate(now));
+      while (true) {
+         LocalDate date = now.minusDays(1);
+         String formatDate = DateUtil.formatDate(date);
+         if (!endDate.equals(formatDate)) {
+            dateList.add(formatDate);
+            now = date;
+         } else {
+            dateList.add(formatDate);
+            break;
+         }
+      }
+
+      //对日期遍历
+      List<TaxOutInfoExl> list = new ArrayList<>();
+      for (String date : dateList) {
+         TaxOutInfoExl exl = new TaxOutInfoExl();
+         String start = date + " 00:00:00";
+         String end = date + " 23:59:59";
+         LocalDateTime startTime = DateUtil.parseDateTime(start);
+         LocalDateTime endTime = DateUtil.parseDateTime(end);
+
+         //超市
+         LambdaQueryWrapper<Voucher> wrapper = new LambdaQueryWrapper<Voucher>()
+               .ge(Voucher::getPayTime,startTime)
+               .le(Voucher::getPayTime,endTime)
+               .eq(Voucher::getTypeName,SUPPER_NAME);
+
+         Integer integer = baseMapper.selectCount(wrapper);
+         exl.setDate(date);
+         exl.setSupper(integer);
+
+         //曾小厨
+         LambdaQueryWrapper<Voucher> wrapper1 = new LambdaQueryWrapper<Voucher>()
+               .ge(Voucher::getPayTime,startTime)
+               .le(Voucher::getPayTime,endTime)
+               .eq(Voucher::getTypeName,ZENG_NAME);
+
+         Integer count = baseMapper.selectCount(wrapper1);
+         exl.setZRestaurant(count);
+
+         //渔乐圈
+         LambdaQueryWrapper<Voucher> wrapper2 = new LambdaQueryWrapper<Voucher>()
+               .ge(Voucher::getPayTime,startTime)
+               .le(Voucher::getPayTime,endTime)
+               .eq(Voucher::getTypeName,YU_NAME);
+
+         Integer count1 = baseMapper.selectCount(wrapper2);
+         exl.setYRestaurant(count1);
+
+         //成福记
+         LambdaQueryWrapper<Voucher> wrapper3 = new LambdaQueryWrapper<Voucher>()
+               .ge(Voucher::getPayTime,startTime)
+               .le(Voucher::getPayTime,endTime)
+               .eq(Voucher::getTypeName,CHENG_NAME);
+
+         Integer count2 = baseMapper.selectCount(wrapper3);
+         exl.setCRestaurant(count2);
+         list.add(exl);
+      }
+
+      return list;
    }
 
    private List<ExcelBO> allGetListExcelBO(){

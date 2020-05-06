@@ -2,6 +2,7 @@ package com.dkm.entity.exl;
 
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -62,5 +63,12 @@ public class ContentExl {
     * 支出信息
     */
    private List<OutInfoExl> list;
+
+   /**
+    * 日期
+    */
+   private LocalDate date;
+
+
 
 }

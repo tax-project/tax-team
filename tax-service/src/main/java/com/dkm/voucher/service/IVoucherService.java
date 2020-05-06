@@ -3,6 +3,7 @@ package com.dkm.voucher.service;
 import com.dkm.count.entity.bo.CountBO;
 import com.dkm.count.entity.bo.ExcelBO;
 import com.dkm.count.entity.bo.PayPageBO;
+import com.dkm.entity.exl.tax.TaxOutInfoExl;
 import com.dkm.voucher.entity.bo.IdVo;
 import com.dkm.voucher.entity.bo.OptionBo;
 import com.dkm.voucher.entity.vo.VoucherQrCodeVo;
@@ -74,4 +75,10 @@ public interface IVoucherService {
     * @param money 支付金额
     */
    void perfectDeductionAmount(Double money,Long id);
+
+   /**
+    * 查询税务局统计数据
+    * @return
+    */
+   List<TaxOutInfoExl> listAll ();
 }
